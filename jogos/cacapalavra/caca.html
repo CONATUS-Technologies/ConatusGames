@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍 Caça Palavras - Desktop Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="caca.css">
+</head>
+<body>
+    <div class="desktop-container">
+        <!-- Game Header -->
+        <header class="game-header">
+            <div class="title-section">
+                <h1>🔍 CAÇA PALAVRAS</h1>
+                <div class="subtitle">Desktop Edition</div>
+            </div>
+            
+            <div class="stats-panel">
+                <div class="stat-item">
+                    <div class="stat-label">TEMPO</div>
+                    <div class="stat-value" id="gameTime">00:00</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">MELHOR</div>
+                    <div class="stat-value" id="bestTime">--:--</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">NÍVEL</div>
+                    <div class="stat-value" id="currentDifficulty">FÁCIL</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">PALAVRAS</div>
+                    <div class="stat-value" id="wordsFound">0/10</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Game Area -->
+        <div class="game-area">
+            <!-- Left Sidebar -->
+            <aside class="left-sidebar">
+                <div class="controls-section">
+                    <h3>🎮 CONTROLES</h3>
+                    <div class="control-group">
+                        <button id="newGameBtn" class="btn btn-primary">
+                            <span class="btn-icon">🆕</span>
+                            <span class="btn-text">NOVO JOGO</span>
+                        </button>
+                        <button id="pauseBtn" class="btn btn-secondary" disabled>
+                            <span class="btn-icon">⏸</span>
+                            <span class="btn-text">PAUSAR</span>
+                        </button>
+                        <button id="resetBtn" class="btn btn-danger">
+                            <span class="btn-icon">⟲</span>
+                            <span class="btn-text">REINICIAR</span>
+                        </button>
+                        <button id="hintBtn" class="btn btn-warning">
+                            <span class="btn-icon">💡</span>
+                            <span class="btn-text">DICA</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>📖 INSTRUÇÕES</h3>
+                    <div class="instruction-list">
+                        <div class="instruction-item">
+                            <span class="key-combo">CLICK</span>
+                            <span class="instruction-text">Selecionar letra</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">ARRASTAR</span>
+                            <span class="instruction-text">Formar palavra</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">ESPAÇO</span>
+                            <span class="instruction-text">Pausar/Continuar</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">ESC</span>
+                            <span class="instruction-text">Cancelar seleção</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">H</span>
+                            <span class="instruction-text">Dica</span>
+                        </div>
+                        <div class="instruction-item mobile-only">
+                            <span class="key-combo">TOQUE</span>
+                            <span class="instruction-text">Toque e arraste</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>⚙️ CONFIGURAÇÕES</h3>
+                    <div class="setting-item">
+                        <label for="soundToggle">Som</label>
+                        <input type="checkbox" id="soundToggle" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label for="highlightToggle">Destacar</label>
+                        <input type="checkbox" id="highlightToggle" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label for="difficultySelect">Dificuldade</label>
+                        <select id="difficultySelect">
+                            <option value="easy">Fácil</option>
+                            <option value="medium" selected>Médio</option>
+                            <option value="hard">Difícil</option>
+                            <option value="expert">Expert</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label for="hintsToggle">Dicas</label>
+                        <input type="checkbox" id="hintsToggle" checked>
+                    </div>
+                    <button id="solveBtn" class="btn btn-back" onclick="window.location.href='../../index.html'">
+                        <span class="btn-text">VOLTAR</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Game Board -->
+            <main class="game-board-container">
+                <div class="game-board">
+                    <div id="wordSearchGrid" class="word-search-grid"></div>
+                    <div class="game-status" id="gameStatus">Pressione NOVO JOGO para começar</div>
+                </div>
+            </main>
+
+            <!-- Right Sidebar -->
+            <aside class="right-sidebar">
+                <div class="words-section">
+                    <h3>📝 PALAVRAS PARA ENCONTRAR</h3>
+                    <div class="words-counter">
+                        <span id="wordsCounterText">0/0 palavras encontradas</span>
+                        <div class="words-progress-bar">
+                            <div class="words-progress-fill" id="wordsProgressFill"></div>
+                        </div>
+                    </div>
+                    <div class="words-list" id="wordsList">
+                        <!-- Words will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="statistics-section">
+                    <h3>📊 ESTATÍSTICAS</h3>
+                    <div class="stat-list" id="statsList">
+                        <div class="stat-row">
+                            <span class="stat-name">Jogos Completados:</span>
+                            <span class="stat-value" id="gamesCompleted">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-name">Melhor Tempo:</span>
+                            <span class="stat-value" id="personalBest">--:--</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-name">Precisão:</span>
+                            <span class="stat-value" id="accuracy">--%</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-name">Dicas Usadas:</span>
+                            <span class="stat-value" id="hintsUsed">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="achievements-section">
+                    <h3>🎯 CONQUISTAS</h3>
+                    <div class="achievements-list" id="achievementsList">
+                        <div class="achievement locked">
+                            <div class="achievement-icon">🥇</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Primeira Palavra</div>
+                                <div class="achievement-desc">Complete seu primeiro caça palavras</div>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <div class="achievement-icon">⚡</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Velocista</div>
+                                <div class="achievement-desc">Complete em menos de 3 minutos</div>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <div class="achievement-icon">🎯</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Perfeccionista</div>
+                                <div class="achievement-desc">Complete sem usar dicas</div>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <div class="achievement-icon">🧠</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Mestre</div>
+                                <div class="achievement-desc">Complete nível Expert</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="progress-section">
+                    <h3>📈 PROGRESSO</h3>
+                    <div class="progress-item">
+                        <span class="progress-label">Palavras Encontradas</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <span class="progress-text" id="progressText">0/10</span>
+                    </div>
+                    <div class="difficulty-stats">
+                        <div class="difficulty-stat">
+                            <span class="difficulty-name">Fácil:</span>
+                            <span class="difficulty-count" id="easyCount">0</span>
+                        </div>
+                        <div class="difficulty-stat">
+                            <span class="difficulty-name">Médio:</span>
+                            <span class="difficulty-count" id="mediumCount">0</span>
+                        </div>
+                        <div class="difficulty-stat">
+                            <span class="difficulty-name">Difícil:</span>
+                            <span class="difficulty-count" id="hardCount">0</span>
+                        </div>
+                        <div class="difficulty-stat">
+                            <span class="difficulty-name">Expert:</span>
+                            <span class="difficulty-count" id="expertCount">0</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Mobile Controls (shown only on mobile) -->
+        <div class="mobile-controls" id="mobileControls">
+            <div class="mobile-control-buttons">
+                <button id="mobileNewGameBtn" class="mobile-action-btn btn-primary">
+                    <span class="btn-icon">🆕</span>
+                    NOVO
+                </button>
+                <button id="mobilePauseBtn" class="mobile-action-btn btn-secondary" disabled>
+                    <span class="btn-icon">⏸</span>
+                    PAUSAR
+                </button>
+                <button id="mobileResetBtn" class="mobile-action-btn btn-danger">
+                    <span class="btn-icon">⟲</span>
+                    RESET
+                </button>
+                <button id="mobileHintBtn" class="mobile-action-btn btn-warning">
+                    <span class="btn-icon">💡</span>
+                    DICA
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Victory Modal -->
+    <div id="victoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🎉 PARABÉNS!</h2>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="final-stats">
+                    <div class="final-stat">
+                        <div class="final-stat-label">TEMPO FINAL</div>
+                        <div class="final-stat-value" id="finalTime">00:00</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-label">DIFICULDADE</div>
+                        <div class="final-stat-value" id="finalDifficulty">MÉDIO</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-label">PALAVRAS</div>
+                        <div class="final-stat-value" id="finalWords">10/10</div>
+                    </div>
+                </div>
+                <div id="newRecord" class="new-record">
+                    🏆 NOVO RECORDE! 🏆
+                </div>
+                <div class="achievements-earned" id="achievementsEarned"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="playAgainBtn" class="btn btn-primary btn-large">
+                    <span class="btn-icon">🎮</span>
+                    <span class="btn-text">JOGAR NOVAMENTE</span>
+                </button>
+                <button id="mainMenuBtn" class="btn btn-secondary btn-large">
+                    <span class="btn-icon">🏠</span>
+                    <span class="btn-text">MENU PRINCIPAL</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pause Menu -->
+    <div id="pauseMenu" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⏸️ JOGO PAUSADO</h2>
+            </div>
+            <div class="modal-body">
+                <div class="pause-stats">
+                    <div class="pause-stat">
+                        <span>Tempo Decorrido:</span>
+                        <span id="pauseTime">00:00</span>
+                    </div>
+                    <div class="pause-stat">
+                        <span>Dificuldade:</span>
+                        <span id="pauseDifficulty">MÉDIO</span>
+                    </div>
+                    <div class="pause-stat">
+                        <span>Progresso:</span>
+                        <span id="pauseProgress">0/10</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="resumeBtn" class="btn btn-primary">
+                    <span class="btn-icon">▶</span>
+                    <span class="btn-text">CONTINUAR</span>
+                </button>
+                <button id="pauseResetBtn" class="btn btn-danger">
+                    <span class="btn-icon">⟲</span>
+                    <span class="btn-text">REINICIAR</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="caca.js"></script>
+</body>
+</html>

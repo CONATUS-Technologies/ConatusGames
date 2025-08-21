@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🟡 Pac-Man Game - Desktop Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="pacman.css">
+</head>
+<body>
+    <div class="desktop-container">
+        <!-- Game Header -->
+        <header class="game-header">
+            <div class="title-section">
+                <h1>🟡 PAC-MAN GAME</h1>
+                <div class="subtitle">Desktop Edition</div>
+            </div>
+            
+            <div class="stats-panel">
+                <div class="stat-item">
+                    <div class="stat-label">SCORE</div>
+                    <div class="stat-value" id="score">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">LEVEL</div>
+                    <div class="stat-value" id="level">1</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">LIVES</div>
+                    <div class="stat-value" id="lives">3</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">BEST</div>
+                    <div class="stat-value" id="highScore">0</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Game Area -->
+        <div class="game-area">
+            <!-- Left Sidebar -->
+            <aside class="left-sidebar">
+                <div class="controls-section">
+                    <h3>🎮 CONTROLES</h3>
+                    <div class="control-group">
+                        <button id="startBtn" class="btn btn-primary">
+                            <span class="btn-icon">▶</span>
+                            <span class="btn-text">INICIAR</span>
+                        </button>
+                        <button id="pauseBtn" class="btn btn-secondary" disabled>
+                            <span class="btn-icon">⏸</span>
+                            <span class="btn-text">PAUSAR</span>
+                        </button>
+                        <button id="resetBtn" class="btn btn-danger">
+                            <span class="btn-icon">⟲</span>
+                            <span class="btn-text">REINICIAR</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>📖 INSTRUÇÕES</h3>
+                    <div class="instruction-list">
+                        <div class="instruction-item">
+                            <span class="key-combo">↑ ↓ ← →</span>
+                            <span class="instruction-text">Mover Pac-Man</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">WASD</span>
+                            <span class="instruction-text">Controle alternativo</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">ESPAÇO</span>
+                            <span class="instruction-text">Pausar/Continuar</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">R</span>
+                            <span class="instruction-text">Reiniciar jogo</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">ESC</span>
+                            <span class="instruction-text">Menu principal</span>
+                        </div>
+                        <div class="instruction-item mobile-only">
+                            <span class="key-combo">TOQUE</span>
+                            <span class="instruction-text">Use os botões abaixo</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="power-ups-section">
+                    <h3>⚡ POWER-UPS</h3>
+                    <div class="power-up-list">
+                        <div class="power-up-item">
+                            <span class="power-up-icon">🔴</span>
+                            <span class="power-up-text">Pellets normais - 10pts</span>
+                        </div>
+                        <div class="power-up-item">
+                            <span class="power-up-icon">⭐</span>
+                            <span class="power-up-text">Power Pellet - 50pts</span>
+                        </div>
+                        <div class="power-up-item">
+                            <span class="power-up-icon">🍒</span>
+                            <span class="power-up-text">Frutas - 100-300pts</span>
+                        </div>
+                        <div class="power-up-item">
+                            <span class="power-up-icon">👻</span>
+                            <span class="power-up-text">Fantasma - 200-1600pts</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>⚙️ CONFIGURAÇÕES</h3>
+                    <div class="setting-item">
+                        <label for="soundToggle">Som</label>
+                        <input type="checkbox" id="soundToggle" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label for="particlesToggle">Partículas</label>
+                        <input type="checkbox" id="particlesToggle" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label for="difficultySelect">Dificuldade</label>
+                        <select id="difficultySelect">
+                            <option value="easy">Fácil</option>
+                            <option value="normal" selected>Normal</option>
+                            <option value="hard">Difícil</option>
+                            <option value="nightmare">Pesadelo</option>
+                        </select>
+                    </div>
+                    <button id="solveBtn" class="btn btn-back" onclick="window.location.href='../../index.html'">
+                        <span class="btn-text">VOLTAR</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Game Board -->
+            <main class="game-board-container">
+                <div class="game-board">
+                    <canvas id="gameCanvas" width="640" height="640"></canvas>
+                    <div class="game-status" id="gameStatus">Pressione INICIAR para começar</div>
+                    <div class="fps-counter" id="fpsCounter">FPS: 60</div>
+                    <div class="ready-message" id="readyMessage">PREPARAR!</div>
+                </div>
+            </main>
+
+            <!-- Right Sidebar -->
+            <aside class="right-sidebar">
+                <div class="ghost-status-section">
+                    <h3>👻 STATUS DOS FANTASMAS</h3>
+                    <div class="ghost-list" id="ghostList">
+                        <div class="ghost-item">
+                            <div class="ghost-icon blinky">👻</div>
+                            <div class="ghost-info">
+                                <div class="ghost-name">Blinky</div>
+                                <div class="ghost-mode">Perseguir</div>
+                            </div>
+                        </div>
+                        <div class="ghost-item">
+                            <div class="ghost-icon pinky">👻</div>
+                            <div class="ghost-info">
+                                <div class="ghost-name">Pinky</div>
+                                <div class="ghost-mode">Emboscar</div>
+                            </div>
+                        </div>
+                        <div class="ghost-item">
+                            <div class="ghost-icon inky">👻</div>
+                            <div class="ghost-info">
+                                <div class="ghost-name">Inky</div>
+                                <div class="ghost-mode">Patrulhar</div>
+                            </div>
+                        </div>
+                        <div class="ghost-item">
+                            <div class="ghost-icon clyde">👻</div>
+                            <div class="ghost-info">
+                                <div class="ghost-name">Clyde</div>
+                                <div class="ghost-mode">Aleatório</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="power-pellet-timer" id="powerPelletTimer">
+                        <div class="timer-label">TEMPO RESTANTE</div>
+                        <div class="timer-value" id="timerValue">0</div>
+                    </div>
+                </div>
+
+                <div class="leaderboard-section">
+                    <h3>🏆 RANKING</h3>
+                    <div class="leaderboard" id="leaderboard">
+                        <div class="score-entry">
+                            <span class="rank">#1</span>
+                            <span class="points">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="achievements-section">
+                    <h3>🎯 CONQUISTAS</h3>
+                    <div class="achievements-list" id="achievementsList">
+                        <div class="achievement locked">
+                            <div class="achievement-icon">🔴</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Primeiro Pellet</div>
+                                <div class="achievement-desc">Coma seu primeiro pellet</div>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <div class="achievement-icon">👻</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Caça-Fantasmas</div>
+                                <div class="achievement-desc">Coma 4 fantasmas em sequence</div>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <div class="achievement-icon">🍒</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Frutívoro</div>
+                                <div class="achievement-desc">Colete 10 frutas</div>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <div class="achievement-icon">🏃</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Speedrunner</div>
+                                <div class="achievement-desc">Complete um nível em 60s</div>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <div class="achievement-icon">💎</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Perfeição</div>
+                                <div class="achievement-desc">Complete um nível sem morrer</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mini-map-section">
+                    <h3>🗺️ MINI MAPA</h3>
+                    <canvas id="miniMap" width="120" height="120"></canvas>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Mobile Controls (shown only on mobile) -->
+        <div class="mobile-controls" id="mobileControls">
+            <div class="mobile-control-buttons">
+                <button id="mobileStartBtn" class="mobile-action-btn btn-primary">
+                    <span class="btn-icon">▶</span>
+                    INICIAR
+                </button>
+                <button id="mobilePauseBtn" class="mobile-action-btn btn-secondary" disabled>
+                    <span class="btn-icon">⏸</span>
+                    PAUSAR
+                </button>
+                <button id="mobileResetBtn" class="mobile-action-btn btn-danger">
+                    <span class="btn-icon">⟲</span>
+                    RESET
+                </button>
+            </div>
+            <div class="mobile-dpad">
+                <button class="mobile-btn up" data-direction="up">↑</button>
+                <button class="mobile-btn left" data-direction="left">←</button>
+                <button class="mobile-btn center" id="mobileCenterBtn">⏸</button>
+                <button class="mobile-btn right" data-direction="right">→</button>
+                <button class="mobile-btn down" data-direction="down">↓</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="gameOverModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>💀 GAME OVER</h2>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="final-stats">
+                    <div class="final-stat">
+                        <div class="final-stat-label">PONTUAÇÃO FINAL</div>
+                        <div class="final-stat-value" id="finalScore">0</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-label">NÍVEL ALCANÇADO</div>
+                        <div class="final-stat-value" id="finalLevel">1</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-label">PELLETS COMIDOS</div>
+                        <div class="final-stat-value" id="finalPellets">0</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-label">TEMPO DE JOGO</div>
+                        <div class="final-stat-value" id="gameTime">00:00</div>
+                    </div>
+                </div>
+                <div id="newRecord" class="new-record">
+                    🏆 NOVO RECORDE! 🏆
+                </div>
+                <div class="achievements-earned" id="achievementsEarned"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="playAgainBtn" class="btn btn-primary btn-large">
+                    <span class="btn-icon">🎮</span>
+                    <span class="btn-text">JOGAR NOVAMENTE</span>
+                </button>
+                <button id="mainMenuBtn" class="btn btn-secondary btn-large">
+                    <span class="btn-icon">🏠</span>
+                    <span class="btn-text">MENU PRINCIPAL</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pause Menu -->
+    <div id="pauseMenu" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⏸️ JOGO PAUSADO</h2>
+            </div>
+            <div class="modal-body">
+                <div class="pause-stats">
+                    <div class="pause-stat">
+                        <span>Pontuação:</span>
+                        <span id="pauseScore">0</span>
+                    </div>
+                    <div class="pause-stat">
+                        <span>Nível:</span>
+                        <span id="pauseLevel">1</span>
+                    </div>
+                    <div class="pause-stat">
+                        <span>Vidas:</span>
+                        <span id="pauseLives">3</span>
+                    </div>
+                    <div class="pause-stat">
+                        <span>Tempo:</span>
+                        <span id="pauseTime">00:00</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="resumeBtn" class="btn btn-primary">
+                    <span class="btn-icon">▶</span>
+                    <span class="btn-text">CONTINUAR</span>
+                </button>
+                <button id="pauseResetBtn" class="btn btn-danger">
+                    <span class="btn-icon">⟲</span>
+                    <span class="btn-text">REINICIAR</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Level Complete Modal -->
+    <div id="levelCompleteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🎉 NÍVEL COMPLETO!</h2>
+            </div>
+            <div class="modal-body">
+                <div class="level-complete-stats">
+                    <div class="level-stat">
+                        <div class="level-stat-label">NÍVEL</div>
+                        <div class="level-stat-value" id="completedLevel">1</div>
+                    </div>
+                    <div class="level-stat">
+                        <div class="level-stat-label">BÔNUS</div>
+                        <div class="level-stat-value" id="levelBonus">1000</div>
+                    </div>
+                    <div class="level-stat">
+                        <div class="level-stat-label">TEMPO</div>
+                        <div class="level-stat-value" id="levelTime">01:30</div>
+                    </div>
+                </div>
+                <div class="next-level-info">
+                    <div class="next-level-text">Próximo nível: Velocidade aumentada!</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="nextLevelBtn" class="btn btn-primary btn-large">
+                    <span class="btn-icon">➡</span>
+                    <span class="btn-text">PRÓXIMO NÍVEL</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="pacman.js"></script>
+</body>
+</html>

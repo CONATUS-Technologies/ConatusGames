@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🫧 Bubble Shooter - Desktop Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="bubble-shooter.css">
+</head>
+<body>
+    <div class="desktop-container">
+        <!-- Game Header -->
+        <header class="game-header">
+            <div class="title-section">
+                <h1>🫧 BUBBLE SHOOTER</h1>
+                <div class="subtitle">Desktop Edition</div>
+            </div>
+            
+            <div class="stats-panel">
+                <div class="stat-item">
+                    <div class="stat-label">SCORE</div>
+                    <div class="stat-value" id="score">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">SHOTS</div>
+                    <div class="stat-value" id="shots">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">LEVEL</div>
+                    <div class="stat-value" id="level">1</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">BEST</div>
+                    <div class="stat-value" id="highScore">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">COMBO</div>
+                    <div class="stat-value" id="combo">0</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Game Area -->
+        <div class="game-area">
+            <!-- Left Sidebar -->
+            <aside class="left-sidebar">
+                <div class="controls-section">
+                    <h3>🎮 CONTROLES</h3>
+                    <div class="control-group">
+                        <button id="startBtn" class="btn btn-primary">
+                            <span class="btn-icon">▶</span>
+                            <span class="btn-text">INICIAR</span>
+                        </button>
+                        <button id="pauseBtn" class="btn btn-secondary" disabled>
+                            <span class="btn-icon">⏸</span>
+                            <span class="btn-text">PAUSAR</span>
+                        </button>
+                        <button id="resetBtn" class="btn btn-danger">
+                            <span class="btn-icon">⟲</span>
+                            <span class="btn-text">REINICIAR</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>📖 INSTRUÇÕES</h3>
+                    <div class="instruction-list">
+                        <div class="instruction-item">
+                            <span class="key-combo">MOUSE</span>
+                            <span class="instruction-text">Mirar bolha</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">CLIQUE</span>
+                            <span class="instruction-text">Atirar bolha</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">ESPAÇO</span>
+                            <span class="instruction-text">Trocar bolha</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">P</span>
+                            <span class="instruction-text">Pausar/Continuar</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">R</span>
+                            <span class="instruction-text">Reiniciar jogo</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">ESC</span>
+                            <span class="instruction-text">Menu de pausa</span>
+                        </div>
+                        <div class="instruction-item mobile-only">
+                            <span class="key-combo">TOQUE</span>
+                            <span class="instruction-text">Mirar e atirar</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="power-ups-section">
+                    <h3>⚡ POWER-UPS</h3>
+                    <div class="power-up-list">
+                        <div class="power-up-item">
+                            <span class="power-up-icon">🌈</span>
+                            <span class="power-up-name">Bolha Arco-íris</span>
+                        </div>
+                        <div class="power-up-item">
+                            <span class="power-up-icon">💣</span>
+                            <span class="power-up-name">Bolha Bomba</span>
+                        </div>
+                        <div class="power-up-item">
+                            <span class="power-up-icon">🎯</span>
+                            <span class="power-up-name">Mira Laser</span>
+                        </div>
+                        <div class="power-up-item">
+                            <span class="power-up-icon">⚡</span>
+                            <span class="power-up-name">Tiro Duplo</span>
+                        </div>
+                        <div class="power-up-item">
+                            <span class="power-up-icon">🔥</span>
+                            <span class="power-up-name">Bolha de Fogo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>⚙️ CONFIGURAÇÕES</h3>
+                    <div class="setting-item">
+                        <label for="soundToggle">Som</label>
+                        <input type="checkbox" id="soundToggle" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label for="particlesToggle">Partículas</label>
+                        <input type="checkbox" id="particlesToggle" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label for="difficultySelect">Dificuldade</label>
+                        <select id="difficultySelect">
+                            <option value="easy">Fácil</option>
+                            <option value="normal" selected>Normal</option>
+                            <option value="hard">Difícil</option>
+                            <option value="extreme">Extremo</option>
+                        </select>
+                    </div>
+                    <button id="solveBtn" class="btn btn-back" onclick="window.location.href='../../index.html'">
+                        <span class="btn-text">VOLTAR</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Game Board -->
+            <main class="game-board-container">
+                <div class="game-board">
+                    <canvas id="gameCanvas" width="500" height="700"></canvas>
+                    <div class="game-status" id="gameStatus">Pressione INICIAR para começar</div>
+                    <div class="fps-counter" id="fpsCounter">FPS: 60</div>
+                    <div class="active-power-ups" id="activePowerUps"></div>
+                    <div class="aim-line-canvas">
+                        <canvas id="aimCanvas" width="500" height="700"></canvas>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Right Sidebar -->
+            <aside class="right-sidebar">
+                <div class="level-progress-section">
+                    <h3>📊 PROGRESSO</h3>
+                    <div class="progress-info">
+                        <div class="progress-item">
+                            <span class="progress-label">Bolhas Restantes</span>
+                            <span class="progress-value" id="bubblesLeft">0</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="progress-item">
+                            <span class="progress-label">Precisão</span>
+                            <span class="progress-value" id="accuracy">100%</span>
+                        </div>
+                        <div class="progress-item">
+                            <span class="progress-label">Tiros Restantes</span>
+                            <span class="progress-value" id="shotsLeft">30</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="next-bubble-section">
+                    <h3>🎯 PRÓXIMA BOLHA</h3>
+                    <div class="next-bubble-preview">
+                        <span class="preview-label">PRÓXIMA:</span>
+                        <canvas id="nextBubbleCanvas" width="40" height="40"></canvas>
+                    </div>
+                </div>
+
+                <div class="color-stats-section">
+                    <h3>🎨 CORES</h3>
+                    <div class="color-stats" id="colorStats">
+                        <div class="color-stat">
+                            <div class="color-dot" style="background: #ff0000"></div>
+                            <span class="color-count">0</span>
+                        </div>
+                        <div class="color-stat">
+                            <div class="color-dot" style="background: #00ff00"></div>
+                            <span class="color-count">0</span>
+                        </div>
+                        <div class="color-stat">
+                            <div class="color-dot" style="background: #0080ff"></div>
+                            <span class="color-count">0</span>
+                        </div>
+                        <div class="color-stat">
+                            <div class="color-dot" style="background: #ffff00"></div>
+                            <span class="color-count">0</span>
+                        </div>
+                        <div class="color-stat">
+                            <div class="color-dot" style="background: #ff00ff"></div>
+                            <span class="color-count">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="leaderboard-section">
+                    <h3>🏆 RANKING</h3>
+                    <div class="leaderboard" id="leaderboard">
+                        <div class="score-entry">
+                            <span class="rank">#1</span>
+                            <span class="points">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="achievements-section">
+                    <h3>🎯 CONQUISTAS</h3>
+                    <div class="achievements-list" id="achievementsList">
+                        <div class="achievement locked">
+                            <div class="achievement-icon">🎯</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Primeiro Estouro</div>
+                                <div class="achievement-desc">Estoure suas primeiras bolhas</div>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <div class="achievement-icon">💥</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Cadeia Explosiva</div>
+                                <div class="achievement-desc">Faça uma cadeia de 10 bolhas</div>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <div class="achievement-icon">🎨</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Mestre das Cores</div>
+                                <div class="achievement-desc">Limpe todas as cores do nível</div>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <div class="achievement-icon">🚀</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Atirador Elite</div>
+                                <div class="achievement-desc">Complete um nível com 100% de precisão</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Mobile Controls (shown only on mobile) -->
+        <div class="mobile-controls" id="mobileControls">
+            <div class="mobile-control-buttons">
+                <button id="mobileStartBtn" class="mobile-action-btn btn-primary">
+                    <span class="btn-icon">▶</span>
+                    INICIAR
+                </button>
+                <button id="mobilePauseBtn" class="mobile-action-btn btn-secondary" disabled>
+                    <span class="btn-icon">⏸</span>
+                    PAUSAR
+                </button>
+                <button id="mobileResetBtn" class="mobile-action-btn btn-danger">
+                    <span class="btn-icon">⟲</span>
+                    RESET
+                </button>
+            </div>
+            <div class="mobile-game-controls">
+                <button class="mobile-btn swap" data-action="swap">🔄</button>
+                <button class="mobile-btn pause" data-action="pause">⏸</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="gameOverModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>💀 GAME OVER</h2>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="final-stats">
+                    <div class="final-stat">
+                        <div class="final-stat-label">PONTUAÇÃO FINAL</div>
+                        <div class="final-stat-value" id="finalScore">0</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-label">NÍVEL ALCANÇADO</div>
+                        <div class="final-stat-value" id="finalLevel">1</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-label">PRECISÃO</div>
+                        <div class="final-stat-value" id="finalAccuracy">100%</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-label">MAIOR COMBO</div>
+                        <div class="final-stat-value" id="finalMaxCombo">0</div>
+                    </div>
+                </div>
+                <div id="newRecord" class="new-record">
+                    🏆 NOVO RECORDE! 🏆
+                </div>
+                <div class="achievements-earned" id="achievementsEarned"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="playAgainBtn" class="btn btn-primary btn-large">
+                    <span class="btn-icon">🎮</span>
+                    <span class="btn-text">JOGAR NOVAMENTE</span>
+                </button>
+                <button id="mainMenuBtn" class="btn btn-secondary btn-large">
+                    <span class="btn-icon">🏠</span>
+                    <span class="btn-text">MENU PRINCIPAL</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pause Menu -->
+    <div id="pauseMenu" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⏸️ JOGO PAUSADO</h2>
+            </div>
+            <div class="modal-body">
+                <div class="pause-stats">
+                    <div class="pause-stat">
+                        <span>Pontuação:</span>
+                        <span id="pauseScore">0</span>
+                    </div>
+                    <div class="pause-stat">
+                        <span>Nível:</span>
+                        <span id="pauseLevel">1</span>
+                    </div>
+                    <div class="pause-stat">
+                        <span>Tiros:</span>
+                        <span id="pauseShots">0</span>
+                    </div>
+                    <div class="pause-stat">
+                        <span>Combo:</span>
+                        <span id="pauseCombo">0</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="resumeBtn" class="btn btn-primary">
+                    <span class="btn-icon">▶</span>
+                    <span class="btn-text">CONTINUAR</span>
+                </button>
+                <button id="pauseResetBtn" class="btn btn-danger">
+                    <span class="btn-icon">⟲</span>
+                    <span class="btn-text">REINICIAR</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Level Complete Modal -->
+    <div id="levelCompleteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🎉 NÍVEL COMPLETO!</h2>
+            </div>
+            <div class="modal-body">
+                <div class="level-complete-stats">
+                    <div class="level-complete-stat">
+                        <div class="stat-label">BÔNUS DE NÍVEL</div>
+                        <div class="stat-value" id="levelBonus">+1000</div>
+                    </div>
+                    <div class="level-complete-stat">
+                        <div class="stat-label">BÔNUS DE PRECISÃO</div>
+                        <div class="stat-value" id="accuracyBonus">+500</div>
+                    </div>
+                    <div class="level-complete-stat">
+                        <div class="stat-label">BÔNUS DE COMBO</div>
+                        <div class="stat-value" id="comboBonus">+200</div>
+                    </div>
+                </div>
+                <div class="next-level-preview">
+                    <h3>Próximo: <span id="nextLevelTitle">Nível 2</span></h3>
+                    <p id="nextLevelDescription">Novas cores de bolhas aparecem!</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="nextLevelBtn" class="btn btn-primary btn-large">
+                    <span class="btn-icon">➡️</span>
+                    <span class="btn-text">PRÓXIMO NÍVEL</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Power-up Effect -->
+    <div id="powerUpEffect" class="power-up-effect">
+        <div class="power-up-text">POWER-UP!</div>
+        <div class="power-up-name-display">Bolha Arco-íris</div>
+    </div>
+
+    <!-- Combo Effect -->
+    <div class="combo-effect" id="comboEffect">
+        <div class="combo-text"></div>
+    </div>
+
+    <script src="bubble-shooter.js"></script>
+</body>
+</html>

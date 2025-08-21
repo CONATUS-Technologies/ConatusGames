@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConatusGames - Portal de Jogos Clássicos</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Desktop Container -->
+    <div class="desktop-container">
+        <!-- Header -->
+        <header class="game-header">
+            <div class="title-section">
+                <h1>CONATUSGAMES</h1>
+                <div class="subtitle">PORTAL DE JOGOS CLÁSSICOS</div>
+            </div>
+
+            <div class="user-section">
+                <button class="btn btn-secondary" id="loginBtn">
+                    <span class="btn-icon">🔐</span>
+                    <span>LOGIN</span>
+                </button>
+                <button class="btn btn-primary" id="registerBtn">
+                    <span class="btn-icon">👤</span>
+                    <span>CADASTRAR</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content - Games Grid -->
+        <main class="games-container">
+            <div class="games-header">
+                <div class="games-title-section">
+                    <h2>ESCOLHA SEU JOGO</h2>
+                    <div class="search-container">
+                        <input type="text" class="search-input" placeholder="Pesquisar jogos..." id="searchInput">
+                        <i class="fas fa-search search-icon"></i>
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <div class="filter-buttons" id="filterButtons">
+                        <button class="filter-btn active" data-filter="all">TODOS</button>
+                        <button class="filter-btn" data-filter="puzzle">PUZZLE</button>
+                        <button class="filter-btn" data-filter="arcade">ARCADE</button>
+                        <button class="filter-btn" data-filter="strategy">ESTRATÉGIA</button>
+                    </div>
+                    <button class="expand-categories-btn" id="expandBtn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <!-- Categorias ocultas inicialmente -->
+                    <div class="hidden-categories" id="hiddenCategories" style="display: none;">
+                        <button class="filter-btn" data-filter="action">AÇÃO</button>
+                        <button class="filter-btn" data-filter="sports">ESPORTES</button>
+                        <button class="filter-btn" data-filter="racing">CORRIDA</button>
+                        <button class="filter-btn" data-filter="rpg">RPG</button>
+                        <button class="filter-btn" data-filter="simulation">SIMULAÇÃO</button>
+                        <button class="filter-btn" data-filter="adventure">AVENTURA</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="games-grid">
+                <!-- Sudoku Card -->
+                <div class="game-card" data-category="puzzle" data-game="sudoku">
+                    <div class="game-card-inner">
+                        <div class="game-card-header">
+                            <span class="game-icon">🔢</span>
+                            <span class="game-badge">PUZZLE</span>
+                        </div>
+                        <h3 class="game-title">SUDOKU</h3>
+                        <img src="gifs/sudoku.gif" alt="Sudoku" class="game-icon-gif">
+                        <p class="game-description">Desafie sua mente com o clássico quebra-cabeça numérico!</p>
+                        <div class="game-stats">
+                            <div class="game-stat">
+                                <span class="stat-icon">👥</span>
+                                <span class="stat-text">2.5k jogadores</span>
+                            </div>
+                            <div class="game-stat">
+                                <span class="stat-icon">⭐</span>
+                                <span class="stat-text">4.8</span>
+                            </div>
+                        </div>
+                        <div class="game-difficulty">
+                            <span class="difficulty-label">Dificuldade:</span>
+                            <div class="difficulty-bars">
+                                <span class="bar active"></span>
+                                <span class="bar active"></span>
+                                <span class="bar active"></span>
+                                <span class="bar"></span>
+                                <span class="bar"></span>
+                            </div>
+                        </div>
+                        <button id="solveBtn" class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/sudoku/sudoku.html'">
+                            <span class="btn-icon">▶</span>
+                            <span>JOGAR</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Breakout Card -->
+                <div class="game-card" data-category="arcade" data-game="breakout">
+                    <div class="game-card-inner">
+                        <div class="game-card-header">
+                            <span class="game-icon">🧱</span>
+                            <span class="game-badge">ARCADE</span>
+                        </div>
+                        <h3 class="game-title">BREAKOUT</h3>
+                        <img src="gifs/breakout.gif" alt="Breakout" class="game-icon-gif">
+                        <p class="game-description">Quebre todos os blocos neste clássico arcade viciante!</p>
+                        <div class="game-stats">
+                            <div class="game-stat">
+                                <span class="stat-icon">👥</span>
+                                <span class="stat-text">3.2k jogadores</span>
+                            </div>
+                            <div class="game-stat">
+                                <span class="stat-icon">⭐</span>
+                                <span class="stat-text">4.6</span>
+                            </div>
+                        </div>
+                        <div class="game-difficulty">
+                            <span class="difficulty-label">Dificuldade:</span>
+                            <div class="difficulty-bars">
+                                <span class="bar active"></span>
+                                <span class="bar active"></span>
+                                <span class="bar"></span>
+                                <span class="bar"></span>
+                                <span class="bar"></span>
+                            </div>
+                        </div>
+                        <button id="solveBtn" class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/breakout/breakout.html'">
+                            <span class="btn-icon">▶</span>
+                            <span>JOGAR</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Pac-Man Card -->
+                <div class="game-card" data-category="arcade" data-game="pacman">
+                    <div class="game-card-inner">
+                        <div class="game-card-header">
+                            <span class="game-icon">👻</span>
+                            <span class="game-badge">ARCADE</span>
+                        </div>
+                        <h3 class="game-title">PAC-MAN</h3>
+                        <img src="gifs/pacman.gif" alt="PacMan" class="game-icon-gif">
+                        <p class="game-description">Fuja dos fantasmas e colete todas as pílulas no labirinto!</p>
+                        <div class="game-stats">
+                            <div class="game-stat">
+                                <span class="stat-icon">👥</span>
+                                <span class="stat-text">5.1k jogadores</span>
+                            </div>
+                            <div class="game-stat">
+                                <span class="stat-icon">⭐</span>
+                                <span class="stat-text">4.9</span>
+                            </div>
+                        </div>
+                        <div class="game-difficulty">
+                            <span class="difficulty-label">Dificuldade:</span>
+                            <div class="difficulty-bars">
+                                <span class="bar active"></span>
+                                <span class="bar active"></span>
+                                <span class="bar active"></span>
+                                <span class="bar"></span>
+                                <span class="bar"></span>
+                            </div>
+                        </div>
+                        <button id="solveBtn" class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/pacman/pacman.html'">
+                            <span class="btn-icon">▶</span>
+                            <span>JOGAR</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Space Invaders Card -->
+                <div class="game-card" data-category="arcade" data-game="spaceinvaders">
+                    <div class="game-card-inner">
+                        <div class="game-card-header">
+                            <span class="game-icon">🛸</span>
+                            <span class="game-badge">ARCADE</span>
+                        </div>
+                        <h3 class="game-title">SPACE INVADERS</h3>
+                        <img src="gifs/space.gif" alt="Space" class="game-icon-gif">
+                        <p class="game-description">Defenda a Terra da invasão alienígena neste shooter clássico!</p>
+                        <div class="game-stats">
+                            <div class="game-stat">
+                                <span class="stat-icon">👥</span>
+                                <span class="stat-text">4.3k jogadores</span>
+                            </div>
+                            <div class="game-stat">
+                                <span class="stat-icon">⭐</span>
+                                <span class="stat-text">4.7</span>
+                            </div>
+                        </div>
+                        <div class="game-difficulty">
+                            <span class="difficulty-label">Dificuldade:</span>
+                            <div class="difficulty-bars">
+                                <span class="bar active"></span>
+                                <span class="bar active"></span>
+                                <span class="bar active"></span>
+                                <span class="bar active"></span>
+                                <span class="bar"></span>
+                            </div>
+                        </div>
+                        <button id="solveBtn" class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/space/space.html'">
+                            <span class="btn-icon">▶</span>
+                            <span>JOGAR</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tetris Card -->
+                <div class="game-card" data-category="puzzle" data-game="tetris">
+                    <div class="game-card-inner">
+                        <div class="game-card-header">
+                            <span class="game-icon">🔷</span>
+                            <span class="game-badge">PUZZLE</span>
+                        </div>
+                        <h3 class="game-title">TETRIS</h3>
+                        <img src="gifs/tetris.gif" alt="Tetris" class="game-icon-gif">
+                        <p class="game-description">Encaixe as peças e complete linhas neste puzzle atemporal!</p>
+                        <div class="game-stats">
+                            <div class="game-stat">
+                                <span class="stat-icon">👥</span>
+                                <span class="stat-text">6.8k jogadores</span>
+                            </div>
+                            <div class="game-stat">
+                                <span class="stat-icon">⭐</span>
+                                <span class="stat-text">4.9</span>
+                            </div>
+                        </div>
+                        <div class="game-difficulty">
+                            <span class="difficulty-label">Dificuldade:</span>
+                            <div class="difficulty-bars">
+                                <span class="bar active"></span>
+                                <span class="bar active"></span>
+                                <span class="bar active"></span>
+                                <span class="bar active"></span>
+                                <span class="bar"></span>
+                            </div>
+                        </div>
+                        <button id="solveBtn" class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/tetris/tetris.html'">
+                            <span class="btn-icon">▶</span>
+                            <span>JOGAR</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Paciência Card -->
+                <div class="game-card" data-category="strategy" data-game="paciencia">
+                    <div class="game-card-inner">
+                        <div class="game-card-header">
+                            <span class="game-icon">🃏</span>
+                            <span class="game-badge">ESTRATÉGIA</span>
+                        </div>
+                        <h3 class="game-title">PACIÊNCIA</h3>
+                        <img src="gifs/paciencia.gif" alt="Paciência" class="game-icon-gif">
+                        <p class="game-description">Organize as cartas em sequência e naipe. Um clássico jogo de raciocínio e calma!</p>
+                        <div class="game-stats">
+                            <div class="game-stat">
+                                <span class="stat-icon">👥</span>
+                                <span class="stat-text">4.7k jogadores</span>
+                            </div>
+                            <div class="game-stat">
+                                <span class="stat-icon">⭐</span>
+                                <span class="stat-text">4.5</span>
+                            </div>
+                        </div>
+                        <div class="game-difficulty">
+                            <span class="difficulty-label">Dificuldade:</span>
+                            <div class="difficulty-bars">
+                                <span class="bar active"></span>
+                                <span class="bar active"></span>
+                                <span class="bar active"></span>
+                                <span class="bar"></span>
+                                <span class="bar"></span>
+                            </div>
+                        </div>
+                        <button id="playCheckersBtn" class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/paciencia/paciencia.html'">
+                            <span class="btn-icon">▶</span>
+                            <span>JOGAR</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Snake Card -->
+                <div class="game-card" data-category="arcade" data-game="snake">
+                    <div class="game-card-inner">
+                        <div class="game-card-header">
+                            <span class="game-icon">🐍</span>
+                            <span class="game-badge">ARCADE</span>
+                        </div>
+                        <h3 class="game-title">SNAKE</h3>
+                        <img src="gifs/snake.gif" alt="Snake" class="game-icon-gif">
+                        <p class="game-description">Cresça sua cobra coletando comida sem bater nas paredes!</p>
+                        <div class="game-stats">
+                            <div class="game-stat">
+                                <span class="stat-icon">👥</span>
+                                <span class="stat-text">3.9k jogadores</span>
+                            </div>
+                            <div class="game-stat">
+                                <span class="stat-icon">⭐</span>
+                                <span class="stat-text">4.5</span>
+                            </div>
+                        </div>
+                        <div class="game-difficulty">
+                            <span class="difficulty-label">Dificuldade:</span>
+                            <div class="difficulty-bars">
+                                <span class="bar active"></span>
+                                <span class="bar active"></span>
+                                <span class="bar"></span>
+                                <span class="bar"></span>
+                                <span class="bar"></span>
+                            </div>
+                        </div>
+                        <button id="solveBtn" class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/snake/snake.html'">
+                            <span class="btn-icon">▶</span>
+                            <span>JOGAR</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Chess Card -->
+                <div class="game-card" data-category="strategy" data-game="chess">
+                    <div class="game-card-inner">
+                        <div class="game-card-header">
+                            <span class="game-icon">♟️</span>
+                            <span class="game-badge">ESTRATÉGIA</span>
+                        </div>
+                        <h3 class="game-title">XADREZ</h3>
+                        <img src="gifs/xadrez.gif" alt="Xadrez" class="game-icon-gif">
+                        <p class="game-description">Desafie sua mente e enfrente o adversário neste clássico jogo de estratégia!</p>
+                        <div class="game-stats">
+                            <div class="game-stat">
+                                <span class="stat-icon">👥</span>
+                                <span class="stat-text">5.4k jogadores</span>
+                            </div>
+                            <div class="game-stat">
+                                <span class="stat-icon">⭐</span>
+                                <span class="stat-text">4.9</span>
+                            </div>
+                        </div>
+                        <div class="game-difficulty">
+                            <span class="difficulty-label">Dificuldade:</span>
+                            <div class="difficulty-bars">
+                                <span class="bar active"></span>
+                                <span class="bar active"></span>
+                                <span class="bar active"></span>
+                                <span class="bar active"></span>
+                                <span class="bar"></span>
+                            </div>
+                        </div>
+                        <button id="playChessBtn" class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/xadrez/xadrez.html'">
+                            <span class="btn-icon">▶</span>
+                            <span>JOGAR</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Word Search Card -->
+                <div class="game-card" data-category="puzzle" data-game="wordsearch">
+                    <div class="game-card-inner">
+                        <div class="game-card-header">
+                            <span class="game-icon">🔍</span>
+                            <span class="game-badge">PUZZLE</span>
+                        </div>
+                        <h3 class="game-title">CAÇA-PALAVRAS</h3>
+                        <img src="gifs/caca.gif" alt="Caça-Palavra" class="game-icon-gif">
+                        <p class="game-description">Encontre todas as palavras escondidas na grade de letras!</p>
+                        <div class="game-stats">
+                            <div class="game-stat">
+                                <span class="stat-icon">👥</span>
+                                <span class="stat-text">3.2k jogadores</span>
+                            </div>
+                            <div class="game-stat">
+                                <span class="stat-icon">⭐</span>
+                                <span class="stat-text">4.7</span>
+                            </div>
+                        </div>
+                        <div class="game-difficulty">
+                            <span class="difficulty-label">Dificuldade:</span>
+                            <div class="difficulty-bars">
+                                <span class="bar active"></span>
+                                <span class="bar active"></span>
+                                <span class="bar"></span>
+                                <span class="bar"></span>
+                                <span class="bar"></span>
+                            </div>
+                        </div>
+                        <button id="playBtn" class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/cacapalavra/caca.html'">
+                            <span class="btn-icon">▶</span>
+                            <span>JOGAR</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Checkers Card -->
+                <div class="game-card" data-category="strategy" data-game="checkers">
+                    <div class="game-card-inner">
+                        <div class="game-card-header">
+                            <span class="game-icon">🟢</span>
+                            <span class="game-badge">ESTRATÉGIA</span>
+                        </div>
+                        <h3 class="game-title">DAMAS</h3>
+                        <img src="gifs/damas.gif" alt="Damas" class="game-icon-gif">
+                        <p class="game-description">Capture peças, avance no tabuleiro e torne-se rei neste clássico jogo de tabuleiro!</p>
+                        <div class="game-stats">
+                            <div class="game-stat">
+                                <span class="stat-icon">👥</span>
+                                <span class="stat-text">3.8k jogadores</span>
+                            </div>
+                            <div class="game-stat">
+                                <span class="stat-icon">⭐</span>
+                                <span class="stat-text">4.6</span>
+                            </div>
+                        </div>
+                        <div class="game-difficulty">
+                            <span class="difficulty-label">Dificuldade:</span>
+                            <div class="difficulty-bars">
+                                <span class="bar active"></span>
+                                <span class="bar active"></span>
+                                <span class="bar active"></span>
+                                <span class="bar"></span>
+                                <span class="bar"></span>
+                            </div>
+                        </div>
+                        <button id="playCheckersBtn" class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/damas/damas.html'">
+                            <span class="btn-icon">▶</span>
+                            <span>JOGAR</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bubble Shooter Card with GIF -->
+                <div class="game-card" data-category="puzzle" data-game="bubble-shooter">
+                    <div class="game-card-inner">
+                        <div class="game-card-header">
+                            <span class="game-icon">🫧</span>
+                            <span class="game-badge">PUZZLE</span>
+                        </div>
+                        <h3 class="game-title">BUBBLE SHOOTER</h3>
+                        <img src="gifs/bubble-shooter.gif" alt="Bubble Shooter" class="game-icon-gif">
+                        <p class="game-description">Atire bolhas coloridas, faça combinações e limpe o tabuleiro antes que ele encha!</p>
+                        <div class="game-stats">
+                            <div class="game-stat">
+                                <span class="stat-icon">👥</span>
+                                <span class="stat-text">6.1k jogadores</span>
+                            </div>
+                            <div class="game-stat">
+                                <span class="stat-icon">⭐</span>
+                                <span class="stat-text">4.8</span>
+                            </div>
+                        </div>
+                        <div class="game-difficulty">
+                            <span class="difficulty-label">Dificuldade:</span>
+                            <div class="difficulty-bars">
+                                <span class="bar active"></span>
+                                <span class="bar active"></span>
+                                <span class="bar active"></span>
+                                <span class="bar"></span>
+                                <span class="bar"></span>
+                            </div>
+                        </div>
+                        <button id="playBubbleShooterBtn" class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/bubble-shooter/bubble-shooter.html'">
+                            <span class="btn-icon">▶</span>
+                            <span>JOGAR</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Jogo da Velha (Tic Tac Toe) Card with GIF -->
+                <div class="game-card" data-category="strategy" data-game="tic-tac-toe">
+                    <div class="game-card-inner">
+                        <div class="game-card-header">
+                            <span class="game-icon">⭕</span>
+                            <span class="game-badge">ESTRATÉGIA</span>
+                        </div>
+                        <h3 class="game-title">JOGO DA VELHA</h3>
+                        <img src="gifs/jogo-da-velha.gif" alt="Jogo da Velha" class="game-icon-gif">
+                        <p class="game-description">Coloque X ou O no tabuleiro e tente alinhar três em sequência antes do adversário!</p>
+                        <div class="game-stats">
+                            <div class="game-stat">
+                                <span class="stat-icon">👥</span>
+                                <span class="stat-text">7.3k jogadores</span>
+                            </div>
+                            <div class="game-stat">
+                                <span class="stat-icon">⭐</span>
+                                <span class="stat-text">4.4</span>
+                            </div>
+                        </div>
+                        <div class="game-difficulty">
+                            <span class="difficulty-label">Dificuldade:</span>
+                            <div class="difficulty-bars">
+                                <span class="bar active"></span>
+                                <span class="bar active"></span>
+                                <span class="bar"></span>
+                                <span class="bar"></span>
+                                <span class="bar"></span>
+                            </div>
+                        </div>
+                        <button id="playTicTacToeBtn" class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/jogo-da-velha/jogo-da-velha.html'">
+                            <span class="btn-icon">▶</span>
+                            <span>JOGAR</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>ConatusGames</h2>
+                    <p>Portal de jogos clássicos para todas as idades</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-links-column">
+                        <h3>Links Rápidos</h3>
+                        <ul>
+                            <li><a href="#inicio">Início</a></li>
+                            <li><a href="#jogos">Jogos</a></li>
+                            <li><a href="#rankings">Rankings</a></li>
+                            <li><a href="#sobre">Sobre Nós</a></li>
+                            <li><a href="#contato">Contato</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-links-column">
+                        <h3>Categorias</h3>
+                        <ul>
+                            <li><a href="#puzzle">Puzzle</a></li>
+                            <li><a href="#arcade">Arcade</a></li>
+                            <li><a href="#strategy">Estratégia</a></li>
+                            <li><a href="#action">Ação</a></li>
+                            <li><a href="#classic">Clássicos</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-links-column contact-info">
+                        <h3>Entre em Contato</h3>
+                        <div class="info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <p>Av. Lucas Monteiro, 420 - Campinas, SP</p>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-phone-alt"></i>
+                            <p>+55 (19) 99999-8888</p>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-envelope"></i>
+                            <p>conatustechlogies@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    <p>&copy; 2025 ConatusGames. Todos os direitos reservados.</p>
+                </div>
+                <div class="legal-links">
+                    <a href="#">Termos de Uso</a>
+                    <a href="#">Política de Privacidade</a>
+                    <a href="#">Política de Cookies</a>
+                </div>
+                <div class="social-media">
+                    <div class="social-icons">
+                        <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.linkedin.com/in/lucas-monteiro-67649b233" class="social-icon" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.youtube.com/channel/UCJJAjVGLffp-A_V_fgbwT8w" class="social-icon" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="https://github.com/CONATUS-Technologies" class="social-icon" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating particles effect -->
+    <div class="particles-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

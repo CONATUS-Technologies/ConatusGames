@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐍 Snake Game - Desktop Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="snake.css">
+</head>
+<body>
+    <div class="desktop-container">
+        <!-- Game Header -->
+        <header class="game-header">
+            <div class="title-section">
+                <h1>🐍 SNAKE GAME</h1>
+                <div class="subtitle">Desktop Edition</div>
+            </div>
+            
+            <div class="stats-panel">
+                <div class="stat-item">
+                    <div class="stat-label">SCORE</div>
+                    <div class="stat-value" id="score">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">BEST</div>
+                    <div class="stat-value" id="highScore">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">LEVEL</div>
+                    <div class="stat-value" id="level">1</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">SPEED</div>
+                    <div class="stat-value" id="speed">1x</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Game Area -->
+        <div class="game-area">
+            <!-- Left Sidebar -->
+            <aside class="left-sidebar">
+                <div class="controls-section">
+                    <h3>🎮 CONTROLES</h3>
+                    <div class="control-group">
+                        <button id="startBtn" class="btn btn-primary">
+                            <span class="btn-icon">▶</span>
+                            <span class="btn-text">INICIAR</span>
+                        </button>
+                        <button id="pauseBtn" class="btn btn-secondary" disabled>
+                            <span class="btn-icon">⏸</span>
+                            <span class="btn-text">PAUSAR</span>
+                        </button>
+                        <button id="resetBtn" class="btn btn-danger">
+                            <span class="btn-icon">⟲</span>
+                            <span class="btn-text">REINICIAR</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>📖 INSTRUÇÕES</h3>
+                    <div class="instruction-list">
+                        <div class="instruction-item">
+                            <span class="key-combo">↑ ↓ ← →</span>
+                            <span class="instruction-text">Mover a cobra</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">ESPAÇO</span>
+                            <span class="instruction-text">Pausar/Continuar</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">R</span>
+                            <span class="instruction-text">Reiniciar jogo</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">ESC</span>
+                            <span class="instruction-text">Menu principal</span>
+                        </div>
+                        <div class="instruction-item mobile-only">
+                            <span class="key-combo">TOQUE</span>
+                            <span class="instruction-text">Use os botões abaixo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>⚙️ CONFIGURAÇÕES</h3>
+                    <div class="setting-item">
+                        <label for="soundToggle">Som</label>
+                        <input type="checkbox" id="soundToggle" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label for="gridToggle">Grade</label>
+                        <input type="checkbox" id="gridToggle" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label for="difficultySelect">Dificuldade</label>
+                        <select id="difficultySelect">
+                            <option value="easy">Fácil</option>
+                            <option value="normal" selected>Normal</option>
+                            <option value="hard">Difícil</option>
+                            <option value="extreme">Extremo</option>
+                        </select>
+                    </div>
+                    <button id="solveBtn" class="btn btn-back" onclick="window.location.href='../../index.html'">
+                        <span class="btn-text">VOLTAR</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Game Board -->
+            <main class="game-board-container">
+                <div class="game-board">
+                    <canvas id="gameCanvas" width="600" height="600"></canvas>
+                    <div class="game-status" id="gameStatus">Pressione INICIAR para começar</div>
+                    <div class="fps-counter" id="fpsCounter">FPS: 60</div>
+                </div>
+            </main>
+
+            <!-- Right Sidebar -->
+            <aside class="right-sidebar">
+                <div class="leaderboard-section">
+                    <h3>🏆 RANKING</h3>
+                    <div class="leaderboard" id="leaderboard">
+                        <div class="score-entry">
+                            <span class="rank">#1</span>
+                            <span class="points">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="achievements-section">
+                    <h3>🎯 CONQUISTAS</h3>
+                    <div class="achievements-list" id="achievementsList">
+                        <div class="achievement locked">
+                            <div class="achievement-icon">🥇</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Primeira Maçã</div>
+                                <div class="achievement-desc">Coma sua primeira maçã</div>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <div class="achievement-icon">🏃</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Velocista</div>
+                                <div class="achievement-desc">Alcance velocidade 5x</div>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <div class="achievement-icon">📏</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Gigante</div>
+                                <div class="achievement-desc">Tenha 50 segmentos</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mini-map-section">
+                    <h3>🗺️ MINI MAPA</h3>
+                    <canvas id="miniMap" width="120" height="120"></canvas>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Mobile Controls (shown only on mobile) -->
+        <div class="mobile-controls" id="mobileControls">
+            <div class="mobile-control-buttons">
+                <button id="mobileStartBtn" class="mobile-action-btn btn-primary">
+                    <span class="btn-icon">▶</span>
+                    INICIAR
+                </button>
+                <button id="mobilePauseBtn" class="mobile-action-btn btn-secondary" disabled>
+                    <span class="btn-icon">⏸</span>
+                    PAUSAR
+                </button>
+                <button id="mobileResetBtn" class="mobile-action-btn btn-danger">
+                    <span class="btn-icon">⟲</span>
+                    RESET
+                </button>
+            </div>
+            <div class="mobile-dpad">
+                <button class="mobile-btn up" data-direction="up">↑</button>
+                <button class="mobile-btn left" data-direction="left">←</button>
+                <button class="mobile-btn center" id="mobileCenterBtn">⏸</button>
+                <button class="mobile-btn right" data-direction="right">→</button>
+                <button class="mobile-btn down" data-direction="down">↓</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="gameOverModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>💀 GAME OVER</h2>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="final-stats">
+                    <div class="final-stat">
+                        <div class="final-stat-label">PONTUAÇÃO FINAL</div>
+                        <div class="final-stat-value" id="finalScore">0</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-label">NÍVEL ALCANÇADO</div>
+                        <div class="final-stat-value" id="finalLevel">1</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-label">TEMPO DE JOGO</div>
+                        <div class="final-stat-value" id="gameTime">00:00</div>
+                    </div>
+                </div>
+                <div id="newRecord" class="new-record">
+                    🏆 NOVO RECORDE! 🏆
+                </div>
+                <div class="achievements-earned" id="achievementsEarned"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="playAgainBtn" class="btn btn-primary btn-large">
+                    <span class="btn-icon">🎮</span>
+                    <span class="btn-text">JOGAR NOVAMENTE</span>
+                </button>
+                <button id="mainMenuBtn" class="btn btn-secondary btn-large">
+                    <span class="btn-icon">🏠</span>
+                    <span class="btn-text">MENU PRINCIPAL</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pause Menu -->
+    <div id="pauseMenu" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⏸️ JOGO PAUSADO</h2>
+            </div>
+            <div class="modal-body">
+                <div class="pause-stats">
+                    <div class="pause-stat">
+                        <span>Pontuação:</span>
+                        <span id="pauseScore">0</span>
+                    </div>
+                    <div class="pause-stat">
+                        <span>Nível:</span>
+                        <span id="pauseLevel">1</span>
+                    </div>
+                    <div class="pause-stat">
+                        <span>Tempo:</span>
+                        <span id="pauseTime">00:00</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="resumeBtn" class="btn btn-primary">
+                    <span class="btn-icon">▶</span>
+                    <span class="btn-text">CONTINUAR</span>
+                </button>
+                <button id="pauseResetBtn" class="btn btn-danger">
+                    <span class="btn-icon">⟲</span>
+                    <span class="btn-text">REINICIAR</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="snake.js"></script>
+</body>
+</html>

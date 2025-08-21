@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⭕ Jogo da Velha - Desktop Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="jogo-da-velha.css">
+</head>
+<body>
+    <div class="desktop-container">
+        <!-- Game Header -->
+        <header class="game-header">
+            <div class="title-section">
+                <h1>⭕ JOGO DA VELHA</h1>
+                <div class="subtitle">Desktop Edition</div>
+            </div>
+            
+            <div class="stats-panel">
+                <div class="stat-item">
+                    <div class="stat-label">TEMPO</div>
+                    <div class="stat-value" id="gameTime">00:00</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">TURNO</div>
+                    <div class="stat-value" id="currentTurn">X</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">JOGADAS</div>
+                    <div class="stat-value" id="moveCount">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">RODADA</div>
+                    <div class="stat-value" id="roundCount">1</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Game Area -->
+        <div class="game-area">
+            <!-- Left Sidebar -->
+            <aside class="left-sidebar">
+                <div class="controls-section">
+                    <h3>🎮 CONTROLES</h3>
+                    <div class="control-group">
+                        <button id="newGameBtn" class="btn btn-primary">
+                            <span class="btn-icon">🆕</span>
+                            <span class="btn-text">NOVO JOGO</span>
+                        </button>
+                        <button id="resetRoundBtn" class="btn btn-secondary">
+                            <span class="btn-icon">🔄</span>
+                            <span class="btn-text">NOVA RODADA</span>
+                        </button>
+                        <button id="undoBtn" class="btn btn-warning" disabled>
+                            <span class="btn-icon">↩</span>
+                            <span class="btn-text">DESFAZER</span>
+                        </button>
+                        <button id="hintBtn" class="btn btn-info">
+                            <span class="btn-icon">💡</span>
+                            <span class="btn-text">DICA</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>📖 INSTRUÇÕES</h3>
+                    <div class="instruction-list">
+                        <div class="instruction-item">
+                            <span class="key-combo">CLICK</span>
+                            <span class="instruction-text">Marcar célula</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">ESPAÇO</span>
+                            <span class="instruction-text">Nova rodada</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">ESC</span>
+                            <span class="instruction-text">Novo jogo</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">H</span>
+                            <span class="instruction-text">Mostrar dica</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">CTRL+Z</span>
+                            <span class="instruction-text">Desfazer jogada</span>
+                        </div>
+                        <div class="instruction-item mobile-only">
+                            <span class="key-combo">TOQUE</span>
+                            <span class="instruction-text">Marcar célula</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>⚙️ CONFIGURAÇÕES</h3>
+                    <div class="setting-item">
+                        <label for="soundToggle">Som</label>
+                        <input type="checkbox" id="soundToggle" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label for="animationToggle">Animações</label>
+                        <input type="checkbox" id="animationToggle" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label for="aiToggle">Jogar vs IA</label>
+                        <input type="checkbox" id="aiToggle">
+                    </div>
+                    <div class="setting-item">
+                        <label for="aiDifficulty">Dificuldade IA</label>
+                        <select id="aiDifficulty">
+                            <option value="1">Fácil</option>
+                            <option value="2">Médio</option>
+                            <option value="3" selected>Difícil</option>
+                            <option value="4">Impossível</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label for="gameMode">Modo de Jogo</label>
+                        <select id="gameMode">
+                            <option value="best-of-1">Melhor de 1</option>
+                            <option value="best-of-3" selected>Melhor de 3</option>
+                            <option value="best-of-5">Melhor de 5</option>
+                            <option value="infinite">Infinito</option>
+                        </select>
+                    </div>
+                    <button id="solveBtn" class="btn btn-back" onclick="window.location.href='../../index.html'">
+                        <span class="btn-text">VOLTAR</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Game Board -->
+            <main class="game-board-container">
+                
+
+                <div class="game-board">
+                    <div id="ticTacToeBoard" class="tic-tac-toe-board">
+                        <div class="cell" data-index="0"></div>
+                        <div class="cell" data-index="1"></div>
+                        <div class="cell" data-index="2"></div>
+                        <div class="cell" data-index="3"></div>
+                        <div class="cell" data-index="4"></div>
+                        <div class="cell" data-index="5"></div>
+                        <div class="cell" data-index="6"></div>
+                        <div class="cell" data-index="7"></div>
+                        <div class="cell" data-index="8"></div>
+                    </div>
+                    <div class="game-status" id="gameStatus">Pressione NOVO JOGO para começar</div>
+                </div>
+            </main>
+
+            <!-- Right Sidebar -->
+            <aside class="right-sidebar">
+            <!-- Player Indicators movidos para o topo da sidebar -->
+            <div class="player-indicators-section">
+                <h3>👥 JOGADORES</h3>
+                <div class="player-indicators">
+                    <div class="player-indicator" id="playerX">
+                        <div class="player-symbol">❌</div>
+                        <div class="player-name">JOGADOR X</div>
+                        <div class="player-score" id="scoreX">0</div>
+                    </div>
+                    <div class="vs-indicator">VS</div>
+                    <div class="player-indicator" id="playerO">
+                        <div class="player-symbol">⭕</div>
+                        <div class="player-name">JOGADOR O</div>
+                        <div class="player-score" id="scoreO">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="match-progress">
+                <h3>🏆 PROGRESSO</h3>
+                <div class="progress-info">
+                    <div class="progress-item">
+                        <span class="progress-label">Modo:</span>
+                        <span class="progress-value" id="currentMode">Melhor de 3</span>
+                    </div>
+                    <div class="progress-item">
+                        <span class="progress-label">Vitórias necessárias:</span>
+                        <span class="progress-value" id="winsNeeded">2</span>
+                    </div>
+                    <div class="progress-item">
+                        <span class="progress-label">Líder:</span>
+                        <span class="progress-value" id="currentLeader">Empate</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="statistics-section">
+                <h3>📊 ESTATÍSTICAS</h3>
+                <div class="stat-list" id="statsList">
+                    <div class="stat-row">
+                        <span class="stat-name">Jogos Completados:</span>
+                        <span class="stat-value" id="gamesCompleted">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-name">Vitórias X:</span>
+                        <span class="stat-value" id="xWins">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-name">Vitórias O:</span>
+                        <span class="stat-value" id="oWins">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-name">Empates:</span>
+                        <span class="stat-value" id="draws">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-name">Vitórias vs IA:</span>
+                        <span class="stat-value" id="aiWins">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-name">Sequência Atual:</span>
+                        <span class="stat-value" id="winStreak">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="achievements-section">
+                <h3>🎯 CONQUISTAS</h3>
+                <div class="achievements-list" id="achievementsList">
+                    <div class="achievement locked">
+                        <div class="achievement-icon">🥇</div>
+                        <div class="achievement-info">
+                            <div class="achievement-name">Primeira Vitória</div>
+                            <div class="achievement-desc">Vença seu primeiro jogo</div>
+                        </div>
+                    </div>
+                    <div class="achievement locked">
+                        <div class="achievement-icon">⚡</div>
+                        <div class="achievement-info">
+                            <div class="achievement-name">Relâmpago</div>
+                            <div class="achievement-desc">Vença em menos de 10 segundos</div>
+                        </div>
+                    </div>
+                    <div class="achievement locked">
+                        <div class="achievement-icon">🎯</div>
+                        <div class="achievement-info">
+                            <div class="achievement-name">Estrategista</div>
+                            <div class="achievement-desc">Vença sem fazer jogadas perdedoras</div>
+                        </div>
+                    </div>
+                    <div class="achievement locked">
+                        <div class="achievement-icon">🔥</div>
+                        <div class="achievement-info">
+                            <div class="achievement-name">Sequência de Fogo</div>
+                            <div class="achievement-desc">Vença 5 jogos seguidos</div>
+                        </div>
+                    </div>
+                    <div class="achievement locked">
+                        <div class="achievement-icon">🤖</div>
+                        <div class="achievement-info">
+                            <div class="achievement-name">Destruidor de IA</div>
+                            <div class="achievement-desc">Vença a IA no nível Impossível</div>
+                        </div>
+                    </div>
+                    <div class="achievement locked">
+                        <div class="achievement-icon">🧠</div>
+                        <div class="achievement-info">
+                            <div class="achievement-name">Mestre</div>
+                            <div class="achievement-desc">Vença 50 jogos</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="move-history-section">
+                <h3>📜 HISTÓRICO</h3>
+                <div class="move-history" id="moveHistory">
+                    <div class="move-list" id="moveList"></div>
+                </div>
+            </div>
+        </aside>
+        </div>
+
+        <!-- Mobile Controls -->
+        <div class="mobile-controls" id="mobileControls">
+            <div class="mobile-control-buttons">
+                <button id="mobileNewGameBtn" class="mobile-action-btn btn-primary">
+                    <span class="btn-icon">🆕</span>
+                    NOVO
+                </button>
+                <button id="mobileResetBtn" class="mobile-action-btn btn-secondary">
+                    <span class="btn-icon">🔄</span>
+                    RESET
+                </button>
+                <button id="mobileUndoBtn" class="mobile-action-btn btn-warning" disabled>
+                    <span class="btn-icon">↩</span>
+                    DESFAZER
+                </button>
+                <button id="mobileHintBtn" class="mobile-action-btn btn-info">
+                    <span class="btn-icon">💡</span>
+                    DICA
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Victory Modal -->
+    <div id="victoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🎉 FIM DE JOGO!</h2>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="final-result" id="finalResult">VITÓRIA!</div>
+                <div class="final-stats">
+                    <div class="final-stat">
+                        <div class="final-stat-label">VENCEDOR</div>
+                        <div class="final-stat-value" id="winner">X</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-label">TEMPO</div>
+                        <div class="final-stat-value" id="finalTime">00:00</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-label">JOGADAS</div>
+                        <div class="final-stat-value" id="finalMoves">0</div>
+                    </div>
+                </div>
+                <div class="match-result" id="matchResult"></div>
+                <div class="achievements-earned" id="achievementsEarned"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="playAgainBtn" class="btn btn-primary btn-large">
+                    <span class="btn-icon">🎮</span>
+                    <span class="btn-text">JOGAR NOVAMENTE</span>
+                </button>
+                <button id="newMatchBtn" class="btn btn-secondary btn-large">
+                    <span class="btn-icon">🆕</span>
+                    <span class="btn-text">NOVA PARTIDA</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Round End Modal -->
+    <div id="roundModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🏁 FIM DA RODADA!</h2>
+            </div>
+            <div class="modal-body">
+                <div class="round-result" id="roundResult">VITÓRIA DE X!</div>
+                <div class="round-stats">
+                    <div class="round-stat">
+                        <span class="round-stat-label">Placar:</span>
+                        <span class="round-stat-value" id="roundScore">X: 1 - O: 0</span>
+                    </div>
+                    <div class="round-stat">
+                        <span class="round-stat-label">Rodada:</span>
+                        <span class="round-stat-value" id="roundNumber">1 de 3</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="nextRoundBtn" class="btn btn-primary">
+                    <span class="btn-icon">▶</span>
+                    <span class="btn-text">PRÓXIMA RODADA</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="jogo-da-velha.js"></script>
+</body>
+</html>

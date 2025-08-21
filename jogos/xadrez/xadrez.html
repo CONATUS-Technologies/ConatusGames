@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>♟️ Xadrez - Desktop Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="xadrez.css">
+</head>
+<body>
+    <div class="desktop-container">
+        <!-- Game Header -->
+        <header class="game-header">
+            <div class="title-section">
+                <h1>♟️ XADREZ</h1>
+                <div class="subtitle">Desktop Edition</div>
+            </div>
+            
+            <div class="stats-panel">
+                <div class="stat-item">
+                    <div class="stat-label">TEMPO BRANCAS</div>
+                    <div class="stat-value" id="whiteTime">10:00</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">TEMPO PRETAS</div>
+                    <div class="stat-value" id="blackTime">10:00</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">TURNO</div>
+                    <div class="stat-value" id="currentTurn">BRANCAS</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">JOGADAS</div>
+                    <div class="stat-value" id="moveCount">0</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Game Area -->
+        <div class="game-area">
+            <!-- Left Sidebar -->
+            <aside class="left-sidebar">
+                <div class="controls-section">
+                    <h3>🎮 CONTROLES</h3>
+                    <div class="control-group">
+                        <button id="newGameBtn" class="btn btn-primary">
+                            <span class="btn-icon">🆕</span>
+                            <span class="btn-text">NOVO JOGO</span>
+                        </button>
+                        <button id="pauseBtn" class="btn btn-secondary" disabled>
+                            <span class="btn-icon">⏸</span>
+                            <span class="btn-text">PAUSAR</span>
+                        </button>
+                        <button id="undoBtn" class="btn btn-warning">
+                            <span class="btn-icon">↩</span>
+                            <span class="btn-text">DESFAZER</span>
+                        </button>
+                        <button id="resignBtn" class="btn btn-danger">
+                            <span class="btn-icon">🏳️</span>
+                            <span class="btn-text">DESISTIR</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>📖 INSTRUÇÕES</h3>
+                    <div class="instruction-list">
+                        <div class="instruction-item">
+                            <span class="key-combo">CLICK</span>
+                            <span class="instruction-text">Selecionar peça</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">DRAG</span>
+                            <span class="instruction-text">Arrastar peça</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">ESPAÇO</span>
+                            <span class="instruction-text">Pausar/Continuar</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">ESC</span>
+                            <span class="instruction-text">Cancelar seleção</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">R</span>
+                            <span class="instruction-text">Girar tabuleiro</span>
+                        </div>
+                        <div class="instruction-item mobile-only">
+                            <span class="key-combo">TOQUE</span>
+                            <span class="instruction-text">Selecione e mova</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>⚙️ CONFIGURAÇÕES</h3>
+                    <div class="setting-item">
+                        <label for="soundToggle">Som</label>
+                        <input type="checkbox" id="soundToggle" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label for="highlightToggle">Destacar</label>
+                        <input type="checkbox" id="highlightToggle" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label for="timeControl">Tempo (min)</label>
+                        <select id="timeControl">
+                            <option value="1">1 min</option>
+                            <option value="3">3 min</option>
+                            <option value="5">5 min</option>
+                            <option value="10" selected>10 min</option>
+                            <option value="15">15 min</option>
+                            <option value="0">Sem tempo</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label for="aiToggle">Jogar vs IA</label>
+                        <input type="checkbox" id="aiToggle">
+                    </div>
+                    <div class="setting-item">
+                        <label for="aiDifficulty">Dificuldade IA</label>
+                        <select id="aiDifficulty">
+                            <option value="1">Fácil</option>
+                            <option value="2">Médio</option>
+                            <option value="3" selected>Difícil</option>
+                            <option value="4">Expert</option>
+                        </select>
+                    </div>
+                    <button id="solveBtn" class="btn btn-back" onclick="window.location.href='../../index.html'">
+                        <span class="btn-text">VOLTAR</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Game Board -->
+            <main class="game-board-container">
+
+                <div class="game-board">
+                    <div id="chessBoard" class="chess-board"></div>
+                    <div class="game-status" id="gameStatus">Pressione NOVO JOGO para começar</div>
+                </div>
+                
+                <!-- Promotion Modal -->
+                <div id="promotionModal" class="promotion-modal">
+                    <div class="promotion-content">
+                        <h4>ESCOLHA A PROMOÇÃO</h4>
+                        <div class="promotion-pieces">
+                            <button class="promotion-piece" data-piece="queen">♕</button>
+                            <button class="promotion-piece" data-piece="rook">♖</button>
+                            <button class="promotion-piece" data-piece="bishop">♗</button>
+                            <button class="promotion-piece" data-piece="knight">♘</button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Right Sidebar -->
+            <aside class="right-sidebar">
+                <div class="captured-pieces" id="blackCaptured">
+                    <span class="captured-label">PEÇAS CAPTURADAS (PRETAS)</span>
+                    <div class="captured-list"></div>
+                </div>
+                
+                <div class="captured-pieces" id="whiteCaptured">
+                    <span class="captured-label">PEÇAS CAPTURADAS (BRANCAS)</span>
+                    <div class="captured-list"></div>
+                </div>
+                
+                <div class="statistics-section">
+                    <h3>📊 ESTATÍSTICAS</h3>
+                    <div class="stat-list" id="statsList">
+                        <div class="stat-row">
+                            <span class="stat-name">Jogos Completados:</span>
+                            <span class="stat-value" id="gamesCompleted">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-name">Vitórias Brancas:</span>
+                            <span class="stat-value" id="whiteWins">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-name">Vitórias Pretas:</span>
+                            <span class="stat-value" id="blackWins">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-name">Empates:</span>
+                            <span class="stat-value" id="draws">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-name">Vitórias vs IA:</span>
+                            <span class="stat-value" id="aiWins">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="achievements-section">
+                    <h3>🎯 CONQUISTAS</h3>
+                    <div class="achievements-list" id="achievementsList">
+                        <div class="achievement locked">
+                            <div class="achievement-icon">🥇</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Primeira Vitória</div>
+                                <div class="achievement-desc">Vença seu primeiro jogo</div>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <div class="achievement-icon">⚡</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Xeque-mate Rápido</div>
+                                <div class="achievement-desc">Vença em menos de 20 jogadas</div>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <div class="achievement-icon">🎯</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Tático</div>
+                                <div class="achievement-desc">Capture a dama do oponente</div>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <div class="achievement-icon">🧠</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Grande Mestre</div>
+                                <div class="achievement-desc">Vença 10 jogos</div>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <div class="achievement-icon">🤖</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Destruidor de IA</div>
+                                <div class="achievement-desc">Vença a IA no nível Expert</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="move-history-section">
+                    <h3>📜 HISTÓRICO</h3>
+                    <div class="move-history" id="moveHistory">
+                        <div class="move-list" id="moveList"></div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Mobile Controls -->
+        <div class="mobile-controls" id="mobileControls">
+            <div class="mobile-control-buttons">
+                <button id="mobileNewGameBtn" class="mobile-action-btn btn-primary">
+                    <span class="btn-icon">🆕</span>
+                    NOVO
+                </button>
+                <button id="mobilePauseBtn" class="mobile-action-btn btn-secondary" disabled>
+                    <span class="btn-icon">⏸</span>
+                    PAUSAR
+                </button>
+                <button id="mobileUndoBtn" class="mobile-action-btn btn-warning">
+                    <span class="btn-icon">↩</span>
+                    DESFAZER
+                </button>
+                <button id="mobileRotateBtn" class="mobile-action-btn btn-danger">
+                    <span class="btn-icon">🔄</span>
+                    GIRAR
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Victory Modal -->
+    <div id="victoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🎉 FIM DE JOGO!</h2>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="final-result" id="finalResult">XEQUE-MATE!</div>
+                <div class="final-stats">
+                    <div class="final-stat">
+                        <div class="final-stat-label">VENCEDOR</div>
+                        <div class="final-stat-value" id="winner">BRANCAS</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-label">JOGADAS</div>
+                        <div class="final-stat-value" id="finalMoves">0</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-label">TEMPO</div>
+                        <div class="final-stat-value" id="finalTime">00:00</div>
+                    </div>
+                </div>
+                <div class="achievements-earned" id="achievementsEarned"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="playAgainBtn" class="btn btn-primary btn-large">
+                    <span class="btn-icon">🎮</span>
+                    <span class="btn-text">JOGAR NOVAMENTE</span>
+                </button>
+                <button id="mainMenuBtn" class="btn btn-secondary btn-large">
+                    <span class="btn-icon">🏠</span>
+                    <span class="btn-text">MENU PRINCIPAL</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pause Menu -->
+    <div id="pauseMenu" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⏸️ JOGO PAUSADO</h2>
+            </div>
+            <div class="modal-body">
+                <div class="pause-stats">
+                    <div class="pause-stat">
+                        <span>Turno Atual:</span>
+                        <span id="pauseTurn">BRANCAS</span>
+                    </div>
+                    <div class="pause-stat">
+                        <span>Jogadas:</span>
+                        <span id="pauseMoves">0</span>
+                    </div>
+                    <div class="pause-stat">
+                        <span>Tempo Decorrido:</span>
+                        <span id="pauseTime">00:00</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="resumeBtn" class="btn btn-primary">
+                    <span class="btn-icon">▶</span>
+                    <span class="btn-text">CONTINUAR</span>
+                </button>
+                <button id="pauseResetBtn" class="btn btn-danger">
+                    <span class="btn-icon">⟲</span>
+                    <span class="btn-text">REINICIAR</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="xadrez.js"></script>
+</body>
+</html>

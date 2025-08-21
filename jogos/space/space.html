@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛸 Space Invaders - Desktop Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="space.css">
+</head>
+<body>
+    <div class="desktop-container">
+        <!-- Game Header -->
+        <header class="game-header">
+            <div class="title-section">
+                <h1>🛸 SPACE INVADERS</h1>
+                <div class="subtitle">Desktop Edition</div>
+            </div>
+            
+            <div class="stats-panel">
+                <div class="stat-item">
+                    <div class="stat-label">SCORE</div>
+                    <div class="stat-value" id="score">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">LIVES</div>
+                    <div class="stat-value" id="lives">3</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">WAVE</div>
+                    <div class="stat-value" id="wave">1</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">BEST</div>
+                    <div class="stat-value" id="highScore">0</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Game Area -->
+        <div class="game-area">
+            <!-- Left Sidebar -->
+            <aside class="left-sidebar">
+                <div class="controls-section">
+                    <h3>🎮 CONTROLES</h3>
+                    <div class="control-group">
+                        <button id="startBtn" class="btn btn-primary">
+                            <span class="btn-icon">▶</span>
+                            <span class="btn-text">INICIAR</span>
+                        </button>
+                        <button id="pauseBtn" class="btn btn-secondary" disabled>
+                            <span class="btn-icon">⏸</span>
+                            <span class="btn-text">PAUSAR</span>
+                        </button>
+                        <button id="resetBtn" class="btn btn-danger">
+                            <span class="btn-icon">⟲</span>
+                            <span class="btn-text">REINICIAR</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>📖 INSTRUÇÕES</h3>
+                    <div class="instruction-list">
+                        <div class="instruction-item">
+                            <span class="key-combo">← →</span>
+                            <span class="instruction-text">Mover nave</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">ESPAÇO</span>
+                            <span class="instruction-text">Atirar</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">P</span>
+                            <span class="instruction-text">Pausar/Continuar</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">R</span>
+                            <span class="instruction-text">Reiniciar jogo</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">ESC</span>
+                            <span class="instruction-text">Menu principal</span>
+                        </div>
+                        <div class="instruction-item mobile-only">
+                            <span class="key-combo">TOQUE</span>
+                            <span class="instruction-text">Use os botões abaixo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="power-ups-section">
+                    <h3>⚡ POWER-UPS</h3>
+                    <div class="power-up-info">
+                        <div class="power-up-item">
+                            <span class="power-up-icon">🔫</span>
+                            <span class="power-up-name">Tiro Duplo</span>
+                        </div>
+                        <div class="power-up-item">
+                            <span class="power-up-icon">⚡</span>
+                            <span class="power-up-name">Tiro Rápido</span>
+                        </div>
+                        <div class="power-up-item">
+                            <span class="power-up-icon">🛡️</span>
+                            <span class="power-up-name">Escudo</span>
+                        </div>
+                        <div class="power-up-item">
+                            <span class="power-up-icon">💥</span>
+                            <span class="power-up-name">Explosivo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>⚙️ CONFIGURAÇÕES</h3>
+                    <div class="setting-item">
+                        <label for="soundToggle">Som</label>
+                        <input type="checkbox" id="soundToggle" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label for="particlesToggle">Partículas</label>
+                        <input type="checkbox" id="particlesToggle" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label for="difficultySelect">Dificuldade</label>
+                        <select id="difficultySelect">
+                            <option value="easy">Fácil</option>
+                            <option value="normal" selected>Normal</option>
+                            <option value="hard">Difícil</option>
+                            <option value="extreme">Extremo</option>
+                        </select>
+                    </div>
+                    <button id="solveBtn" class="btn btn-back" onclick="window.location.href='../../index.html'">
+                        <span class="btn-text">VOLTAR</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Game Board -->
+            <main class="game-board-container">
+                <div class="game-board">
+                    <canvas id="gameCanvas" width="800" height="600"></canvas>
+                    <div class="game-status" id="gameStatus">Pressione INICIAR para começar</div>
+                    <div class="fps-counter" id="fpsCounter">FPS: 60</div>
+                </div>
+            </main>
+
+            <!-- Right Sidebar -->
+            <aside class="right-sidebar">
+                <div class="leaderboard-section">
+                    <h3>🏆 RANKING</h3>
+                    <div class="leaderboard" id="leaderboard">
+                        <div class="score-entry">
+                            <span class="rank">#1</span>
+                            <span class="points">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="achievements-section">
+                    <h3>🎯 CONQUISTAS</h3>
+                    <div class="achievements-list" id="achievementsList">
+                        <div class="achievement locked">
+                            <div class="achievement-icon">👽</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Primeiro Alien</div>
+                                <div class="achievement-desc">Destrua seu primeiro alien</div>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <div class="achievement-icon">🌊</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Exterminador</div>
+                                <div class="achievement-desc">Complete a primeira wave</div>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <div class="achievement-icon">💯</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Cem por Cento</div>
+                                <div class="achievement-desc">Alcance 10.000 pontos</div>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <div class="achievement-icon">🛡️</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Sobrevivente</div>
+                                <div class="achievement-desc">Survive por 5 minutos</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="wave-info-section">
+                    <h3>🌊 WAVE ATUAL</h3>
+                    <div class="wave-stats">
+                        <div class="wave-stat">
+                            <span class="wave-stat-label">Aliens Restantes:</span>
+                            <span class="wave-stat-value" id="aliensRemaining">0</span>
+                        </div>
+                        <div class="wave-stat">
+                            <span class="wave-stat-label">Velocidade:</span>
+                            <span class="wave-stat-value" id="alienSpeed">1x</span>
+                        </div>
+                        <div class="wave-stat">
+                            <span class="wave-stat-label">Bonus Wave:</span>
+                            <span class="wave-stat-value" id="bonusMultiplier">1x</span>
+                        </div>
+                    </div>
+                    <div class="wave-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="waveProgress"></div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Mobile Controls (shown only on mobile) -->
+        <div class="mobile-controls" id="mobileControls">
+            <div class="mobile-control-buttons">
+                <button id="mobileStartBtn" class="mobile-action-btn btn-primary">
+                    <span class="btn-icon">▶</span>
+                    INICIAR
+                </button>
+                <button id="mobilePauseBtn" class="mobile-action-btn btn-secondary" disabled>
+                    <span class="btn-icon">⏸</span>
+                    PAUSAR
+                </button>
+                <button id="mobileResetBtn" class="mobile-action-btn btn-danger">
+                    <span class="btn-icon">⟲</span>
+                    RESET
+                </button>
+            </div>
+            <div class="mobile-game-controls">
+                <div class="mobile-move-controls">
+                    <button class="mobile-btn left" data-action="left">←</button>
+                    <button class="mobile-btn right" data-action="right">→</button>
+                </div>
+                <div class="mobile-action-controls">
+                    <button class="mobile-btn shoot" data-action="shoot">🚀</button>
+                    <button class="mobile-btn pause" data-action="pause">⏸</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="gameOverModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>💀 GAME OVER</h2>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="final-stats">
+                    <div class="final-stat">
+                        <div class="final-stat-label">PONTUAÇÃO FINAL</div>
+                        <div class="final-stat-value" id="finalScore">0</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-label">WAVE ALCANÇADA</div>
+                        <div class="final-stat-value" id="finalWave">1</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-label">ALIENS DESTRUÍDOS</div>
+                        <div class="final-stat-value" id="aliensKilled">0</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-label">TEMPO DE JOGO</div>
+                        <div class="final-stat-value" id="gameTime">00:00</div>
+                    </div>
+                </div>
+                <div id="newRecord" class="new-record">
+                    🏆 NOVO RECORDE! 🏆
+                </div>
+                <div class="achievements-earned" id="achievementsEarned"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="playAgainBtn" class="btn btn-primary btn-large">
+                    <span class="btn-icon">🎮</span>
+                    <span class="btn-text">JOGAR NOVAMENTE</span>
+                </button>
+                <button id="mainMenuBtn" class="btn btn-secondary btn-large">
+                    <span class="btn-icon">🏠</span>
+                    <span class="btn-text">MENU PRINCIPAL</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pause Menu -->
+    <div id="pauseMenu" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⏸️ JOGO PAUSADO</h2>
+            </div>
+            <div class="modal-body">
+                <div class="pause-stats">
+                    <div class="pause-stat">
+                        <span>Pontuação:</span>
+                        <span id="pauseScore">0</span>
+                    </div>
+                    <div class="pause-stat">
+                        <span>Wave:</span>
+                        <span id="pauseWave">1</span>
+                    </div>
+                    <div class="pause-stat">
+                        <span>Vidas:</span>
+                        <span id="pauseLives">3</span>
+                    </div>
+                    <div class="pause-stat">
+                        <span>Tempo:</span>
+                        <span id="pauseTime">00:00</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="resumeBtn" class="btn btn-primary">
+                    <span class="btn-icon">▶</span>
+                    <span class="btn-text">CONTINUAR</span>
+                </button>
+                <button id="pauseResetBtn" class="btn btn-danger">
+                    <span class="btn-icon">⟲</span>
+                    <span class="btn-text">REINICIAR</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wave Complete Modal -->
+    <div id="waveCompleteModal" class="modal">
+        <div class="modal-content wave-complete">
+            <div class="modal-header">
+                <h2>🌊 WAVE COMPLETA!</h2>
+            </div>
+            <div class="modal-body">
+                <div class="wave-complete-stats">
+                    <div class="wave-complete-stat">
+                        <div class="wave-complete-label">Wave Completada</div>
+                        <div class="wave-complete-value" id="completedWave">1</div>
+                    </div>
+                    <div class="wave-complete-stat">
+                        <div class="wave-complete-label">Bonus de Wave</div>
+                        <div class="wave-complete-value" id="waveBonus">+1000</div>
+                    </div>
+                    <div class="wave-complete-stat">
+                        <div class="wave-complete-label">Próxima Wave</div>
+                        <div class="wave-complete-value" id="nextWave">2</div>
+                    </div>
+                </div>
+                <div class="wave-preparation">
+                    <p>Preparando próxima wave...</p>
+                    <div class="countdown" id="countdown">3</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="space.js"></script>
+</body>
+</html>

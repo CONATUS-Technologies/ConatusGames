@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🃏 Paciência - Desktop Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="paciencia.css">
+</head>
+<body>
+    <div class="desktop-container">
+        <!-- Game Header -->
+        <header class="game-header">
+            <div class="title-section">
+                <h1>🃏 PACIÊNCIA</h1>
+                <div class="subtitle">Desktop Edition</div>
+            </div>
+            
+            <div class="stats-panel">
+                <div class="stat-item">
+                    <div class="stat-label">TEMPO</div>
+                    <div class="stat-value" id="gameTime">00:00</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">MELHOR</div>
+                    <div class="stat-value" id="bestTime">--:--</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">PONTOS</div>
+                    <div class="stat-value" id="currentScore">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">MOVIMENTOS</div>
+                    <div class="stat-value" id="moveCount">0</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Game Area -->
+        <div class="game-area">
+            <!-- Left Sidebar -->
+            <aside class="left-sidebar">
+                <div class="controls-section">
+                    <h3>🎮 CONTROLES</h3>
+                    <div class="control-group">
+                        <button id="newGameBtn" class="btn btn-primary">
+                            <span class="btn-icon">🆕</span>
+                            <span class="btn-text">NOVO JOGO</span>
+                        </button>
+                        <button id="pauseBtn" class="btn btn-secondary" disabled>
+                            <span class="btn-icon">⏸</span>
+                            <span class="btn-text">PAUSAR</span>
+                        </button>
+                        <button id="resetBtn" class="btn btn-danger">
+                            <span class="btn-icon">⟲</span>
+                            <span class="btn-text">REINICIAR</span>
+                        </button>
+                        <button id="hintBtn" class="btn btn-warning">
+                            <span class="btn-icon">💡</span>
+                            <span class="btn-text">DICA</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>📖 INSTRUÇÕES</h3>
+                    <div class="instruction-list">
+                        <div class="instruction-item">
+                            <span class="key-combo">CLICK</span>
+                            <span class="instruction-text">Selecionar carta</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">ARRASTE</span>
+                            <span class="instruction-text">Mover cartas</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">DUPLO CLICK</span>
+                            <span class="instruction-text">Auto-mover</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">ESPAÇO</span>
+                            <span class="instruction-text">Pausar/Continuar</span>
+                        </div>
+                        <div class="instruction-item">
+                            <span class="key-combo">H</span>
+                            <span class="instruction-text">Dica</span>
+                        </div>
+                        <div class="instruction-item mobile-only">
+                            <span class="key-combo">TOQUE</span>
+                            <span class="instruction-text">Tocar e arrastar</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>⚙️ CONFIGURAÇÕES</h3>
+                    <div class="setting-item">
+                        <label for="soundToggle">Som</label>
+                        <input type="checkbox" id="soundToggle" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label for="animationToggle">Animações</label>
+                        <input type="checkbox" id="animationToggle" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label for="drawModeSelect">Modo</label>
+                        <select id="drawModeSelect">
+                            <option value="1">1 Carta</option>
+                            <option value="3" selected>3 Cartas</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label for="hintsToggle">Dicas</label>
+                        <input type="checkbox" id="hintsToggle" checked>
+                    </div>
+                    <button id="solveBtn" class="btn btn-back" onclick="window.location.href='../../index.html'">
+                        <span class="btn-text">VOLTAR</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Game Board -->
+            <main class="game-board-container">
+                <div class="game-board">
+                    <!-- Foundation Piles (Aces to Kings) -->
+                    <div class="foundation-area">
+                        <div class="foundation-pile" id="foundation-0" data-suit="hearts">
+                            <div class="pile-placeholder">♥</div>
+                        </div>
+                        <div class="foundation-pile" id="foundation-1" data-suit="diamonds">
+                            <div class="pile-placeholder">♦</div>
+                        </div>
+                        <div class="foundation-pile" id="foundation-2" data-suit="clubs">
+                            <div class="pile-placeholder">♣</div>
+                        </div>
+                        <div class="foundation-pile" id="foundation-3" data-suit="spades">
+                            <div class="pile-placeholder">♠</div>
+                        </div>
+                    </div>
+
+                    <!-- Stock and Waste Piles -->
+                    <div class="stock-area">
+                        <div class="stock-pile" id="stockPile">
+                            <div class="card-back"></div>
+                            <div class="stock-count" id="stockCount">24</div>
+                        </div>
+                        <div class="waste-pile" id="wastePile">
+                            <div class="pile-placeholder">🗑️</div>
+                        </div>
+                    </div>
+
+                    <!-- Tableau (7 columns) -->
+                    <div class="tableau-area">
+                        <div class="tableau-column" id="tableau-0"></div>
+                        <div class="tableau-column" id="tableau-1"></div>
+                        <div class="tableau-column" id="tableau-2"></div>
+                        <div class="tableau-column" id="tableau-3"></div>
+                        <div class="tableau-column" id="tableau-4"></div>
+                        <div class="tableau-column" id="tableau-5"></div>
+                        <div class="tableau-column" id="tableau-6"></div>
+                    </div>
+                    
+                    <div class="game-status" id="gameStatus">Pressione NOVO JOGO para começar</div>
+                </div>
+            </main>
+
+            <!-- Right Sidebar -->
+            <aside class="right-sidebar">
+                <div class="statistics-section">
+                    <h3>📊 ESTATÍSTICAS</h3>
+                    <div class="stat-list" id="statsList">
+                        <div class="stat-row">
+                            <span class="stat-name">Jogos Completados:</span>
+                            <span class="stat-value" id="gamesCompleted">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-name">Melhor Tempo:</span>
+                            <span class="stat-value" id="personalBest">--:--</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-name">Taxa de Vitória:</span>
+                            <span class="stat-value" id="winRate">--%</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-name">Melhor Pontuação:</span>
+                            <span class="stat-value" id="highScore">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="achievements-section">
+                    <h3>🎯 CONQUISTAS</h3>
+                    <div class="achievements-list" id="achievementsList">
+                        <div class="achievement locked">
+                            <div class="achievement-icon">🥇</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Primeira Vitória</div>
+                                <div class="achievement-desc">Complete seu primeiro jogo</div>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <div class="achievement-icon">⚡</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Velocista</div>
+                                <div class="achievement-desc">Vença em menos de 3 minutos</div>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <div class="achievement-icon">🎯</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Estrategista</div>
+                                <div class="achievement-desc">Vença com menos de 100 movimentos</div>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <div class="achievement-icon">🃏</div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Mestre das Cartas</div>
+                                <div class="achievement-desc">Vença 10 jogos consecutivos</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="progress-section">
+                    <h3>📈 PROGRESSO</h3>
+                    <div class="progress-item">
+                        <span class="progress-label">Cartas nas Fundações</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <span class="progress-text" id="progressText">0/52</span>
+                    </div>
+                    <div class="game-stats">
+                        <div class="game-stat">
+                            <span class="stat-name">Modo 1 Carta:</span>
+                            <span class="stat-count" id="mode1Count">0</span>
+                        </div>
+                        <div class="game-stat">
+                            <span class="stat-name">Modo 3 Cartas:</span>
+                            <span class="stat-count" id="mode3Count">0</span>
+                        </div>
+                        <div class="game-stat">
+                            <span class="stat-name">Sequência Atual:</span>
+                            <span class="stat-count" id="currentStreak">0</span>
+                        </div>
+                        <div class="game-stat">
+                            <span class="stat-name">Melhor Sequência:</span>
+                            <span class="stat-count" id="bestStreak">0</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Mobile Controls (shown only on mobile) -->
+        <div class="mobile-controls" id="mobileControls">
+            <div class="mobile-control-buttons">
+                <button id="mobileNewGameBtn" class="mobile-action-btn btn-primary">
+                    <span class="btn-icon">🆕</span>
+                    NOVO
+                </button>
+                <button id="mobilePauseBtn" class="mobile-action-btn btn-secondary" disabled>
+                    <span class="btn-icon">⏸</span>
+                    PAUSAR
+                </button>
+                <button id="mobileResetBtn" class="mobile-action-btn btn-danger">
+                    <span class="btn-icon">⟲</span>
+                    RESET
+                </button>
+                <button id="mobileHintBtn" class="mobile-action-btn btn-warning">
+                    <span class="btn-icon">💡</span>
+                    DICA
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Victory Modal -->
+    <div id="victoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🎉 PARABÉNS!</h2>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="final-stats">
+                    <div class="final-stat">
+                        <div class="final-stat-label">TEMPO FINAL</div>
+                        <div class="final-stat-value" id="finalTime">00:00</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-label">PONTUAÇÃO</div>
+                        <div class="final-stat-value" id="finalScore">0</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-label">MOVIMENTOS</div>
+                        <div class="final-stat-value" id="finalMoves">0</div>
+                    </div>
+                </div>
+                <div id="newRecord" class="new-record">
+                    🏆 NOVO RECORDE! 🏆
+                </div>
+                <div class="achievements-earned" id="achievementsEarned"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="playAgainBtn" class="btn btn-primary btn-large">
+                    <span class="btn-icon">🎮</span>
+                    <span class="btn-text">JOGAR NOVAMENTE</span>
+                </button>
+                <button id="mainMenuBtn" class="btn btn-secondary btn-large">
+                    <span class="btn-icon">🏠</span>
+                    <span class="btn-text">MENU PRINCIPAL</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pause Menu -->
+    <div id="pauseMenu" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⏸️ JOGO PAUSADO</h2>
+            </div>
+            <div class="modal-body">
+                <div class="pause-stats">
+                    <div class="pause-stat">
+                        <span>Tempo Decorrido:</span>
+                        <span id="pauseTime">00:00</span>
+                    </div>
+                    <div class="pause-stat">
+                        <span>Pontuação:</span>
+                        <span id="pauseScore">0</span>
+                    </div>
+                    <div class="pause-stat">
+                        <span>Progresso:</span>
+                        <span id="pauseProgress">0/52</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="resumeBtn" class="btn btn-primary">
+                    <span class="btn-icon">▶</span>
+                    <span class="btn-text">CONTINUAR</span>
+                </button>
+                <button id="pauseResetBtn" class="btn btn-danger">
+                    <span class="btn-icon">⟲</span>
+                    <span class="btn-text">REINICIAR</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="paciencia.js"></script>
+</body>
+</html>
