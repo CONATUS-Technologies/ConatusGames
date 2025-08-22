@@ -262,310 +262,310 @@ document.addEventListener('DOMContentLoaded', function() {
         document.head.appendChild(style);
         document.body.appendChild(loadingOverlay);
         
-        // Simula tempo de carregamento
+        // CORREÇÃO: Chama showGameRating em vez de showGameNotification
         setTimeout(() => {
             loadingOverlay.remove();
             style.remove();
             
-            // Aqui seria onde o jogo real seria iniciado
-            showGameNotification(gameType);
+            // Mostra a tela de avaliação após o carregamento
+            showGameRating(gameType);
         }, 8000);
     }
     
     function showGameRating(gameType) {
-    const notification = document.createElement('div');
-    notification.className = 'game-notification';
-    notification.innerHTML = `
-        <div class="notification-content">
-            <i class="fas fa-gamepad"></i>
-            <h3>Avalie o ${gameType.toUpperCase()}!</h3>
-            <p>Como você classifica este jogo?</p>
-            
-            <div class="rating-stars">
-                <span class="star" data-rating="1">⭐</span>
-                <span class="star" data-rating="2">⭐</span>
-                <span class="star" data-rating="3">⭐</span>
-                <span class="star" data-rating="4">⭐</span>
-                <span class="star" data-rating="5">⭐</span>
-            </div>
-            
-            <div class="rating-text" id="ratingText">Clique nas estrelas para avaliar</div>
-            
-            <textarea 
-                id="gameComment" 
-                placeholder="Deixe um comentário (opcional)..." 
-                maxlength="200"
-            ></textarea>
-            
-            <div class="button-group">
-                <button onclick="submitRating('${gameType}')" class="btn btn-primary" id="submitBtn" disabled>
-                    Enviar Avaliação
-                </button>
-                <button onclick="this.closest('.game-notification').remove()" class="btn btn-secondary">
-                    Pular
-                </button>
-            </div>
-        </div>
-    `;
-    
-    // Estilos da notificação
-    const style = document.createElement('style');
-    style.textContent = `
-        .game-notification {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 10000;
-            animation: notificationIn 0.5s ease;
-        }
-        
-        .notification-content {
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
-            padding: 30px;
-            border-radius: 15px;
-            border: 2px solid #8400FF;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
-            min-width: 350px;
-            max-width: 450px;
-        }
-        
-        .notification-content i {
-            font-size: 3rem;
-            color: #8400FF;
-            margin-bottom: 15px;
-        }
-        
-        .notification-content h3 {
-            color: white;
-            margin-bottom: 10px;
-            font-family: 'Orbitron', monospace;
-        }
-        
-        .notification-content p {
-            color: #b0b0b0;
-            margin-bottom: 20px;
-        }
-        
-        .rating-stars {
-            display: flex;
-            justify-content: center;
-            gap: 5px;
-            margin-bottom: 15px;
-        }
-        
-        .star {
-            font-size: 2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            filter: grayscale(100%);
-            opacity: 0.5;
-        }
-        
-        .star:hover,
-        .star.active {
-            filter: grayscale(0%);
-            opacity: 1;
-            transform: scale(1.2);
-        }
-        
-        .rating-text {
-            color: #8400FF;
-            font-weight: bold;
-            margin-bottom: 15px;
-            min-height: 20px;
-        }
-        
-        #gameComment {
-            width: 100%;
-            min-height: 80px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid #8400FF;
-            border-radius: 8px;
-            color: white;
-            padding: 10px;
-            margin-bottom: 20px;
-            resize: vertical;
-            font-family: inherit;
-        }
-        
-        #gameComment::placeholder {
-            color: #b0b0b0;
-        }
-        
-        #gameComment:focus {
-            outline: none;
-            border-color: #a855f7;
-            box-shadow: 0 0 10px rgba(132, 0, 255, 0.3);
-        }
-        
-        .button-group {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
-        
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: 'Orbitron', monospace;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(45deg, #8400FF, #a855f7);
-            color: white;
-        }
-        
-        .btn-primary:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(132, 0, 255, 0.4);
-        }
-        
-        .btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: #b0b0b0;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-        }
-        
-        @keyframes notificationIn {
-            0% {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(0.8);
-            }
-            100% {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1);
-            }
-        }
-        
-        @keyframes successPulse {
-            0% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.05); }
-            100% { transform: translate(-50%, -50%) scale(1); }
-        }
-    `;
-    
-    document.head.appendChild(style);
-    document.body.appendChild(notification);
-    
-    // Adicionar funcionalidade às estrelas
-    const stars = notification.querySelectorAll('.star');
-    const ratingText = notification.querySelector('#ratingText');
-    const submitBtn = notification.querySelector('#submitBtn');
-    let currentRating = 0;
-    
-    const ratingMessages = {
-        1: "Não gostei 😞",
-        2: "Poderia ser melhor 😐",
-        3: "Bom jogo! 😊",
-        4: "Muito bom! 😍",
-        5: "Incrível! ⭐"
-    };
-    
-    stars.forEach((star, index) => {
-        star.addEventListener('click', () => {
-            currentRating = index + 1;
-            updateStars();
-            ratingText.textContent = ratingMessages[currentRating];
-            submitBtn.disabled = false;
-        });
-        
-        star.addEventListener('mouseenter', () => {
-            highlightStars(index + 1);
-        });
-    });
-    
-    notification.addEventListener('mouseleave', () => {
-        updateStars();
-    });
-    
-    function updateStars() {
-        stars.forEach((star, index) => {
-            if (index < currentRating) {
-                star.classList.add('active');
-            } else {
-                star.classList.remove('active');
-            }
-        });
-    }
-    
-    function highlightStars(rating) {
-        stars.forEach((star, index) => {
-            if (index < rating) {
-                star.classList.add('active');
-            } else {
-                star.classList.remove('active');
-            }
-        });
-    }
-    
-    // Função global para submeter avaliação
-    window.submitRating = function(gameType) {
-        const comment = document.getElementById('gameComment').value.trim();
-        
-        // Simular salvamento da avaliação
-        const rating = {
-            game: gameType,
-            stars: currentRating,
-            comment: comment,
-            timestamp: new Date().toISOString()
-        };
-        
-        // Salvar no localStorage (você pode modificar para enviar para um servidor)
-        const existingRatings = JSON.parse(localStorage.getItem('gameRatings') || '[]');
-        existingRatings.push(rating);
-        localStorage.setItem('gameRatings', JSON.stringify(existingRatings));
-        
-        // Mostrar mensagem de sucesso
+        const notification = document.createElement('div');
+        notification.className = 'game-notification';
         notification.innerHTML = `
             <div class="notification-content">
-                <i class="fas fa-check-circle" style="color: #00ff00;"></i>
-                <h3>Obrigado pela avaliação!</h3>
-                <p>Sua opinião é muito importante para nós.</p>
-                <div style="color: #8400FF; margin: 15px 0;">
-                    ${currentRating} estrela${currentRating !== 1 ? 's' : ''} para ${gameType.toUpperCase()}
+                <i class="fas fa-gamepad"></i>
+                <h3>Avalie o ${gameType.toUpperCase()}!</h3>
+                <p>Como você classifica este jogo?</p>
+                
+                <div class="rating-stars">
+                    <span class="star" data-rating="1">⭐</span>
+                    <span class="star" data-rating="2">⭐</span>
+                    <span class="star" data-rating="3">⭐</span>
+                    <span class="star" data-rating="4">⭐</span>
+                    <span class="star" data-rating="5">⭐</span>
                 </div>
-                ${comment ? `<div style="color: #b0b0b0; font-style: italic; margin: 10px 0;">"${comment}"</div>` : ''}
-                <button onclick="this.closest('.game-notification').remove()" class="btn btn-primary">
-                    Continuar
-                </button>
+                
+                <div class="rating-text" id="ratingText">Clique nas estrelas para avaliar</div>
+                
+                <textarea 
+                    id="gameComment" 
+                    placeholder="Deixe um comentário (opcional)..." 
+                    maxlength="200"
+                ></textarea>
+                
+                <div class="button-group">
+                    <button onclick="submitRating('${gameType}')" class="btn btn-primary" id="submitBtn" disabled>
+                        Enviar Avaliação
+                    </button>
+                    <button onclick="this.closest('.game-notification').remove()" class="btn btn-secondary">
+                        Pular
+                    </button>
+                </div>
             </div>
         `;
         
-        notification.style.animation = 'successPulse 0.6s ease';
+        // Estilos da notificação
+        const style = document.createElement('style');
+        style.textContent = `
+            .game-notification {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                z-index: 10000;
+                animation: notificationIn 0.5s ease;
+            }
+            
+            .notification-content {
+                background: linear-gradient(135deg, #1a1a2e, #16213e);
+                padding: 30px;
+                border-radius: 15px;
+                border: 2px solid #8400FF;
+                text-align: center;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+                min-width: 350px;
+                max-width: 450px;
+            }
+            
+            .notification-content i {
+                font-size: 3rem;
+                color: #8400FF;
+                margin-bottom: 15px;
+            }
+            
+            .notification-content h3 {
+                color: white;
+                margin-bottom: 10px;
+                font-family: 'Orbitron', monospace;
+            }
+            
+            .notification-content p {
+                color: #b0b0b0;
+                margin-bottom: 20px;
+            }
+            
+            .rating-stars {
+                display: flex;
+                justify-content: center;
+                gap: 5px;
+                margin-bottom: 15px;
+            }
+            
+            .star {
+                font-size: 2rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                filter: grayscale(100%);
+                opacity: 0.5;
+            }
+            
+            .star:hover,
+            .star.active {
+                filter: grayscale(0%);
+                opacity: 1;
+                transform: scale(1.2);
+            }
+            
+            .rating-text {
+                color: #8400FF;
+                font-weight: bold;
+                margin-bottom: 15px;
+                min-height: 20px;
+            }
+            
+            #gameComment {
+                width: 100%;
+                min-height: 80px;
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid #8400FF;
+                border-radius: 8px;
+                color: white;
+                padding: 10px;
+                margin-bottom: 20px;
+                resize: vertical;
+                font-family: inherit;
+            }
+            
+            #gameComment::placeholder {
+                color: #b0b0b0;
+            }
+            
+            #gameComment:focus {
+                outline: none;
+                border-color: #a855f7;
+                box-shadow: 0 0 10px rgba(132, 0, 255, 0.3);
+            }
+            
+            .button-group {
+                display: flex;
+                gap: 10px;
+                justify-content: center;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                font-family: 'Orbitron', monospace;
+                font-weight: bold;
+                transition: all 0.3s ease;
+            }
+            
+            .btn-primary {
+                background: linear-gradient(45deg, #8400FF, #a855f7);
+                color: white;
+            }
+            
+            .btn-primary:hover:not(:disabled) {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(132, 0, 255, 0.4);
+            }
+            
+            .btn-primary:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+            
+            .btn-secondary {
+                background: rgba(255, 255, 255, 0.1);
+                color: #b0b0b0;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+            
+            .btn-secondary:hover {
+                background: rgba(255, 255, 255, 0.2);
+                color: white;
+            }
+            
+            @keyframes notificationIn {
+                0% {
+                    opacity: 0;
+                    transform: translate(-50%, -50%) scale(0.8);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translate(-50%, -50%) scale(1);
+                }
+            }
+            
+            @keyframes successPulse {
+                0% { transform: translate(-50%, -50%) scale(1); }
+                50% { transform: translate(-50%, -50%) scale(1.05); }
+                100% { transform: translate(-50%, -50%) scale(1); }
+            }
+        `;
         
-        // Remove automaticamente após 3 segundos
+        document.head.appendChild(style);
+        document.body.appendChild(notification);
+        
+        // Adicionar funcionalidade às estrelas
+        const stars = notification.querySelectorAll('.star');
+        const ratingText = notification.querySelector('#ratingText');
+        const submitBtn = notification.querySelector('#submitBtn');
+        let currentRating = 0;
+        
+        const ratingMessages = {
+            1: "Não gostei 😞",
+            2: "Poderia ser melhor 😐",
+            3: "Bom jogo! 😊",
+            4: "Muito bom! 😍",
+            5: "Incrível! ⭐"
+        };
+        
+        stars.forEach((star, index) => {
+            star.addEventListener('click', () => {
+                currentRating = index + 1;
+                updateStars();
+                ratingText.textContent = ratingMessages[currentRating];
+                submitBtn.disabled = false;
+            });
+            
+            star.addEventListener('mouseenter', () => {
+                highlightStars(index + 1);
+            });
+        });
+        
+        notification.addEventListener('mouseleave', () => {
+            updateStars();
+        });
+        
+        function updateStars() {
+            stars.forEach((star, index) => {
+                if (index < currentRating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+        
+        function highlightStars(rating) {
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+        
+        // Função global para submeter avaliação
+        window.submitRating = function(gameType) {
+            const comment = document.getElementById('gameComment').value.trim();
+            
+            // Simular salvamento da avaliação
+            const rating = {
+                game: gameType,
+                stars: currentRating,
+                comment: comment,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Salvar no localStorage (você pode modificar para enviar para um servidor)
+            const existingRatings = JSON.parse(localStorage.getItem('gameRatings') || '[]');
+            existingRatings.push(rating);
+            localStorage.setItem('gameRatings', JSON.stringify(existingRatings));
+            
+            // Mostrar mensagem de sucesso
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <i class="fas fa-check-circle" style="color: #00ff00;"></i>
+                    <h3>Obrigado pela avaliação!</h3>
+                    <p>Sua opinião é muito importante para nós.</p>
+                    <div style="color: #8400FF; margin: 15px 0;">
+                        ${currentRating} estrela${currentRating !== 1 ? 's' : ''} para ${gameType.toUpperCase()}
+                    </div>
+                    ${comment ? `<div style="color: #b0b0b0; font-style: italic; margin: 10px 0;">"${comment}"</div>` : ''}
+                    <button onclick="this.closest('.game-notification').remove()" class="btn btn-primary">
+                        Continuar
+                    </button>
+                </div>
+            `;
+            
+            notification.style.animation = 'successPulse 0.6s ease';
+            
+            // Remove automaticamente após 3 segundos
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                    style.remove();
+                }
+            }, 3000);
+        };
+        
+        // Remove automaticamente após 30 segundos se não interagir
         setTimeout(() => {
             if (notification.parentNode) {
                 notification.remove();
                 style.remove();
             }
-        }, 3000);
-    };
-    
-    // Remove automaticamente após 30 segundos se não interagir
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.remove();
-            style.remove();
-        }
-    }, 30000);
-}
+        }, 30000);
+    }
 
     // Função para ver avaliações salvas
     function viewGameRatings() {
