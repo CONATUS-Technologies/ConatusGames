@@ -272,7 +272,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 8000);
     }
     
-    function showGameRating(gameType) {
+    function showGameNotification(gameType) {
     const notification = document.createElement('div');
     notification.className = 'game-notification';
     notification.innerHTML = `
