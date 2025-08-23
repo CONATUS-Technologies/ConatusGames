@@ -11,6 +11,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <!-- DEBUG PANEL - Remova em produção -->
+    <div id="debugPanel" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.9); color: lime; padding: 10px; border: 2px solid lime; border-radius: 5px; z-index: 999999; font-family: monospace; font-size: 12px; max-width: 300px;">
+        <div style="margin-bottom: 10px; font-weight: bold; color: yellow;">🔧 DEBUG PANEL</div>
+        <div id="debugInfo">
+            <div>Partículas: <span id="particleCount">0</span></div>
+            <div>Modais: <span id="modalCount">0</span></div>
+            <div>FPS: <span id="fpsCounter">--</span></div>
+            <div>GPU: <span id="gpuInfo">Detectando...</span></div>
+        </div>
+        <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 5px;">
+            <button onclick="testParticles()" style="padding: 5px; background: #00ff00; color: black; border: none; cursor: pointer;">Testar Partículas</button>
+            <button onclick="testModal()" style="padding: 5px; background: #00ff00; color: black; border: none; cursor: pointer;">Testar Modal</button>
+            <button onclick="testAnimation()" style="padding: 5px; background: #00ff00; color: black; border: none; cursor: pointer;">Testar Animação</button>
+            <button onclick="clearDebug()" style="padding: 5px; background: #ff0000; color: white; border: none; cursor: pointer;">Limpar Testes</button>
+            <button onclick="toggleDebug()" style="padding: 5px; background: #ffff00; color: black; border: none; cursor: pointer;">Esconder Debug</button>
+        </div>
+    </div>
+
+    <!-- Container Principal de Partículas com z-index forçado -->
+    <div class="particles-container" id="particlesContainer" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;"></div>
+
     <!-- Desktop Container -->
     <div class="desktop-container">
         <!-- Header -->
@@ -95,7 +116,7 @@
                                 <span class="bar"></span>
                             </div>
                         </div>
-                        <button id="solveBtn" class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/sudoku/sudoku.html'">
+                        <button class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/sudoku/sudoku.html'">
                             <span class="btn-icon">▶</span>
                             <span>JOGAR</span>
                         </button>
@@ -132,7 +153,7 @@
                                 <span class="bar"></span>
                             </div>
                         </div>
-                        <button id="solveBtn" class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/breakout/breakout.html'">
+                        <button class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/breakout/breakout.html'">
                             <span class="btn-icon">▶</span>
                             <span>JOGAR</span>
                         </button>
@@ -169,7 +190,7 @@
                                 <span class="bar"></span>
                             </div>
                         </div>
-                        <button id="solveBtn" class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/pacman/pacman.html'">
+                        <button class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/pacman/pacman.html'">
                             <span class="btn-icon">▶</span>
                             <span>JOGAR</span>
                         </button>
@@ -206,7 +227,7 @@
                                 <span class="bar"></span>
                             </div>
                         </div>
-                        <button id="solveBtn" class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/space/space.html'">
+                        <button class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/space/space.html'">
                             <span class="btn-icon">▶</span>
                             <span>JOGAR</span>
                         </button>
@@ -243,7 +264,7 @@
                                 <span class="bar"></span>
                             </div>
                         </div>
-                        <button id="solveBtn" class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/tetris/tetris.html'">
+                        <button class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/tetris/tetris.html'">
                             <span class="btn-icon">▶</span>
                             <span>JOGAR</span>
                         </button>
@@ -280,7 +301,7 @@
                                 <span class="bar"></span>
                             </div>
                         </div>
-                        <button id="playCheckersBtn" class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/paciencia/paciencia.html'">
+                        <button class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/paciencia/paciencia.html'">
                             <span class="btn-icon">▶</span>
                             <span>JOGAR</span>
                         </button>
@@ -317,7 +338,7 @@
                                 <span class="bar"></span>
                             </div>
                         </div>
-                        <button id="solveBtn" class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/snake/snake.html'">
+                        <button class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/snake/snake.html'">
                             <span class="btn-icon">▶</span>
                             <span>JOGAR</span>
                         </button>
@@ -354,7 +375,7 @@
                                 <span class="bar"></span>
                             </div>
                         </div>
-                        <button id="playChessBtn" class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/xadrez/xadrez.html'">
+                        <button class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/xadrez/xadrez.html'">
                             <span class="btn-icon">▶</span>
                             <span>JOGAR</span>
                         </button>
@@ -391,7 +412,7 @@
                                 <span class="bar"></span>
                             </div>
                         </div>
-                        <button id="playBtn" class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/cacapalavra/caca.html'">
+                        <button class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/cacapalavra/caca.html'">
                             <span class="btn-icon">▶</span>
                             <span>JOGAR</span>
                         </button>
@@ -428,14 +449,14 @@
                                 <span class="bar"></span>
                             </div>
                         </div>
-                        <button id="playCheckersBtn" class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/damas/damas.html'">
+                        <button class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/damas/damas.html'">
                             <span class="btn-icon">▶</span>
                             <span>JOGAR</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- Bubble Shooter Card with GIF -->
+                <!-- Bubble Shooter Card -->
                 <div class="game-card" data-category="puzzle" data-game="bubble-shooter">
                     <div class="game-card-inner">
                         <div class="game-card-header">
@@ -465,14 +486,14 @@
                                 <span class="bar"></span>
                             </div>
                         </div>
-                        <button id="playBubbleShooterBtn" class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/bubble-shooter/bubble-shooter.html'">
+                        <button class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/bubble-shooter/bubble-shooter.html'">
                             <span class="btn-icon">▶</span>
                             <span>JOGAR</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- Jogo da Velha (Tic Tac Toe) Card with GIF -->
+                <!-- Jogo da Velha Card -->
                 <div class="game-card" data-category="strategy" data-game="tic-tac-toe">
                     <div class="game-card-inner">
                         <div class="game-card-header">
@@ -502,7 +523,7 @@
                                 <span class="bar"></span>
                             </div>
                         </div>
-                        <button id="playTicTacToeBtn" class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/jogo-da-velha/jogo-da-velha.html'">
+                        <button class="btn btn-primary game-play-btn" onclick="window.location.href='jogos/jogo-da-velha/jogo-da-velha.html'">
                             <span class="btn-icon">▶</span>
                             <span>JOGAR</span>
                         </button>
@@ -583,8 +604,148 @@
         </div>
     </footer>
 
-    <!-- Floating particles effect -->
-    <div class="particles-container"></div>
+    <!-- Container de Modais com z-index garantido -->
+    <div id="modalContainer" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100000;"></div>
+
+    <!-- Scripts de Debug (remova em produção) -->
+    <script>
+        // Funções de debug globais
+        let debugVisible = true;
+        
+        function toggleDebug() {
+            const panel = document.getElementById('debugPanel');
+            if (debugVisible) {
+                panel.style.display = 'none';
+                debugVisible = false;
+            } else {
+                panel.style.display = 'block';
+                debugVisible = true;
+            }
+        }
+
+        function testParticles() {
+            console.log('🎯 Teste manual de partículas iniciado');
+            // Força criação de 10 partículas de teste
+            for(let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.style.cssText = `
+                        position: fixed !important;
+                        width: 10px !important;
+                        height: 10px !important;
+                        background: #FF00FF !important;
+                        border-radius: 50% !important;
+                        left: ${Math.random() * window.innerWidth}px !important;
+                        top: ${window.innerHeight}px !important;
+                        z-index: 9999 !important;
+                        pointer-events: none !important;
+                        animation: testFloat 3s linear !important;
+                    `;
+                    document.body.appendChild(particle);
+                    
+                    setTimeout(() => particle.remove(), 3000);
+                }, i * 100);
+            }
+        }
+
+        function testModal() {
+            console.log('🎯 Teste manual de modal iniciado');
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed !important;
+                top: 50% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) !important;
+                background: black !important;
+                border: 3px solid lime !important;
+                color: white !important;
+                padding: 20px !important;
+                z-index: 999999 !important;
+                font-family: monospace !important;
+            `;
+            modal.innerHTML = `
+                <h3>MODAL DE TESTE</h3>
+                <p>Este modal está funcionando!</p>
+                <button onclick="this.parentElement.remove()" style="background: red; color: white; padding: 5px; border: none; cursor: pointer;">FECHAR</button>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function testAnimation() {
+            console.log('🎯 Teste manual de animação iniciado');
+            const testDiv = document.createElement('div');
+            testDiv.style.cssText = `
+                position: fixed !important;
+                top: 50% !important;
+                left: 10px !important;
+                width: 100px !important;
+                height: 100px !important;
+                background: linear-gradient(45deg, #FF00FF, #00FFFF) !important;
+                z-index: 999999 !important;
+                animation: testRotate 2s linear infinite !important;
+            `;
+            document.body.appendChild(testDiv);
+            
+            setTimeout(() => testDiv.remove(), 5000);
+        }
+
+        function clearDebug() {
+            console.log('🧹 Limpando elementos de teste');
+            // Remove todos os elementos de teste criados
+            const testElements = document.querySelectorAll('[style*="999999"]');
+            testElements.forEach(el => el.remove());
+        }
+
+        // CSS para animações de teste
+        const debugStyles = document.createElement('style');
+        debugStyles.textContent = `
+            @keyframes testFloat {
+                0% { transform: translateY(0); opacity: 1; }
+                100% { transform: translateY(-100vh); opacity: 0; }
+            }
+            @keyframes testRotate {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(debugStyles);
+
+        // Detector de GPU
+        function detectGPU() {
+            const canvas = document.createElement('canvas');
+            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+            if (gl) {
+                const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                if (debugInfo) {
+                    const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+                    document.getElementById('gpuInfo').textContent = renderer.substring(0, 30) + '...';
+                } else {
+                    document.getElementById('gpuInfo').textContent = 'WebGL OK';
+                }
+            } else {
+                document.getElementById('gpuInfo').textContent = 'Sem WebGL';
+            }
+        }
+
+        // FPS Counter
+        let fps = 0;
+        let lastTime = performance.now();
+        function updateFPS() {
+            const currentTime = performance.now();
+            fps = Math.round(1000 / (currentTime - lastTime));
+            lastTime = currentTime;
+            if (document.getElementById('fpsCounter')) {
+                document.getElementById('fpsCounter').textContent = fps;
+            }
+            requestAnimationFrame(updateFPS);
+        }
+
+        // Inicializar debug
+        document.addEventListener('DOMContentLoaded', () => {
+            detectGPU();
+            updateFPS();
+        });
+    </script>
 
     <script src="script.js"></script>
 </body>
