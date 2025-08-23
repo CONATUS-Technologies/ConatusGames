@@ -364,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // CHAMA A FUNÇÃO DE AVALIAÇÃO
             showGameRating(gameType);
-        }, 3000); // Reduzi para 3 segundos para teste
+        }, 1000); // Reduzi para 1 segundos para teste
     }
     
     function showGameRating(gameType) {
