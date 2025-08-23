@@ -37,7 +37,6 @@ body {
     min-height: 100vh;
     color: var(--text-primary);
     position: relative;
-    /* REMOVIDO: overflow: hidden; - Esta era a causa principal do problema */
     overflow-x: hidden; /* Mantém apenas overflow horizontal oculto */
 }
 

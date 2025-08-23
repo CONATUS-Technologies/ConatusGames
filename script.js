@@ -275,7 +275,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function showGameNotification(gameType) {
     const notification = document.createElement('div');
     notification.className = 'game-notification';
-    notification.innerHTML = `
+    notification.style.zIndex = '99999'; `
         <div class="notification-content">
             <i class="fas fa-gamepad"></i>
             <h3>Avalie o ${gameType.toUpperCase()}!</h3>
