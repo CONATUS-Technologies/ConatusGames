@@ -398,7 +398,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <button onclick="submitRating('${gameType}')" class="btn btn-primary" id="submitBtn" disabled>
                         Enviar Avaliação
                     </button>
-                    <button onclick="this.closest('.game-notification').remove()" class="btn btn-secondary">
+                    <button onclick="this.close+st('.game-notification').remove()" class="btn btn-secondary">
                         Pular
                     </button>
                 </div>
