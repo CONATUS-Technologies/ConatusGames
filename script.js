@@ -247,7 +247,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // ===== SISTEMA DE JOGOS =====
     if (gamePlayButtons.length > 0) {
         gamePlayButtons.forEach(btn => {
-            btn.addEventListener('click', function() {
+            // Remove event listeners antigos se existirem
+            btn.replaceWith(btn.cloneNode(true));
+        });
+        
+        // Reseleciona os botões após clonar
+        const freshGamePlayButtons = document.querySelectorAll('.game-play-btn');
+        
+        freshGamePlayButtons.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault(); // Previne navegação do onclick inline
+                e.stopPropagation(); // Para propagação do evento
+                
                 const gameCard = this.closest('.game-card');
                 if (!gameCard) {
                     console.error('Card do jogo não encontrado');
@@ -255,6 +266,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 
                 const gameType = gameCard.dataset.game || 'jogo-desconhecido';
+                console.log('🎮 Botão clicado para jogo:', gameType);
                 
                 // Efeito visual de clique
                 this.style.transform = 'scale(0.95)';
@@ -266,12 +278,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 showGameLoading(gameType, gameCard);
             });
         });
-        console.log(`✅ ${gamePlayButtons.length} botões de jogo configurados`);
+        console.log(`✅ ${freshGamePlayButtons.length} botões de jogo configurados`);
     }
     
     function showGameLoading(gameType, gameCard) {
         const gameTitle = gameCard.querySelector('.game-title');
         const gameName = gameTitle ? gameTitle.textContent : gameType.toUpperCase();
+        
+        console.log('📦 Iniciando carregamento para:', gameName);
         
         // Cria overlay de carregamento
         const loadingOverlay = document.createElement('div');
@@ -289,6 +303,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Adiciona estilos do overlay
         const style = document.createElement('style');
+        style.id = 'loading-styles';
         style.textContent = `
             .game-loading-overlay {
                 position: fixed;
@@ -344,7 +359,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 height: 100%;
                 background: linear-gradient(90deg, #8400FF, #00D4FF);
                 border-radius: 4px;
-                animation: loadProgress 3s ease-in-out forwards;
+                animation: loadProgress 1s ease-in-out forwards;
             }
             
             @keyframes loadProgress {
@@ -354,6 +369,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         `;
         
+        // Remove estilos antigos se existirem
+        const oldStyle = document.querySelector('#loading-styles');
+        if (oldStyle) oldStyle.remove();
+        
         document.head.appendChild(style);
         document.body.appendChild(loadingOverlay);
         
@@ -362,11 +381,13 @@ document.addEventListener('DOMContentLoaded', function() {
             loadingOverlay.remove();
             style.remove();
             
+            console.log('✨ Carregamento completo, mostrando avaliação');
             // CHAMA A FUNÇÃO DE AVALIAÇÃO
             showGameRating(gameType);
-        }, 1000); // Reduzi para 1 segundos para teste
+        }, 1000);
     }
     
+    // ===== FUNÇÃO DE AVALIAÇÃO CORRIGIDA =====
     function showGameRating(gameType) {
         console.log('🎮 Mostrando avaliação para:', gameType);
         
@@ -395,10 +416,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 ></textarea>
                 
                 <div class="button-group">
-                    <button onclick="submitRating('${gameType}')" class="btn btn-primary" id="submitBtn" disabled>
+                    <button class="btn btn-primary" id="submitBtn" disabled>
                         Enviar Avaliação
                     </button>
-                    <button onclick="this.close+st('.game-notification').remove()" class="btn btn-secondary">
+                    <button class="btn btn-secondary" id="skipBtn">
                         Pular
                     </button>
                 </div>
@@ -407,6 +428,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Estilos da notificação
         const style = document.createElement('style');
+        style.id = 'rating-styles';
         style.textContent = `
             .game-notification {
                 position: fixed;
@@ -558,6 +580,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         `;
         
+        // Remove estilos antigos se existirem
+        const oldStyle = document.querySelector('#rating-styles');
+        if (oldStyle) oldStyle.remove();
+        
         document.head.appendChild(style);
         document.body.appendChild(notification);
         
@@ -565,6 +591,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const stars = notification.querySelectorAll('.star');
         const ratingText = notification.querySelector('#ratingText');
         const submitBtn = notification.querySelector('#submitBtn');
+        const skipBtn = notification.querySelector('#skipBtn');
         let currentRating = 0;
         
         const ratingMessages = {
@@ -612,9 +639,18 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         
-        // Função global para submeter avaliação
-        window.submitRating = function(gameType) {
+        // Event listener para o botão Pular
+        skipBtn.addEventListener('click', function() {
+            console.log('⏭️ Avaliação pulada');
+            notification.remove();
+            style.remove();
+        });
+        
+        // Event listener para o botão Enviar
+        submitBtn.addEventListener('click', function() {
             const comment = document.getElementById('gameComment').value.trim();
+            
+            console.log('💾 Salvando avaliação:', { gameType, currentRating, comment });
             
             // Simular salvamento da avaliação
             const rating = {
@@ -639,13 +675,22 @@ document.addEventListener('DOMContentLoaded', function() {
                         ${currentRating} estrela${currentRating !== 1 ? 's' : ''} para ${gameType.toUpperCase()}
                     </div>
                     ${comment ? `<div style="color: #b0b0b0; font-style: italic; margin: 10px 0;">"${comment}"</div>` : ''}
-                    <button onclick="this.closest('.game-notification').remove()" class="btn btn-primary">
+                    <button class="btn btn-primary" id="continueBtn">
                         Continuar
                     </button>
                 </div>
             `;
             
             notification.style.animation = 'successPulse 0.6s ease';
+            
+            // Adicionar evento ao botão continuar
+            const continueBtn = notification.querySelector('#continueBtn');
+            if (continueBtn) {
+                continueBtn.addEventListener('click', function() {
+                    notification.remove();
+                    style.remove();
+                });
+            }
             
             // Remove automaticamente após 3 segundos
             setTimeout(() => {
@@ -654,7 +699,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     style.remove();
                 }
             }, 3000);
-        };
+        });
         
         // Remove automaticamente após 30 segundos se não interagir
         setTimeout(() => {
@@ -714,7 +759,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
         
-        // Estilos do modal (mesmos estilos do original)
+        // Estilos do modal
         const style = document.createElement('style');
         style.textContent = `
             .auth-modal {
