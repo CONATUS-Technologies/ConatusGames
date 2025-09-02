@@ -1045,7 +1045,7 @@ document.addEventListener('DOMContentLoaded', function() {
             window.history.back();
         });
     }
-});
+}); 
 
 
 // Initialize game when DOM is loaded

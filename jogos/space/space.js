@@ -1810,6 +1810,43 @@ class SpaceInvadersGame {
     }
 }
 
+// Button back
+    document.addEventListener('DOMContentLoaded', function() {
+        const voltarBtn = document.getElementById('solveBtn');
+        
+        if (voltarBtn) {
+            voltarBtn.addEventListener('click', function() {
+                // Detectar se estamos em um subdiretório de jogos
+                const currentPath = window.location.pathname;
+                let homePath;
+                
+                if (currentPath.includes('/jogos/')) {
+                    // Estamos em um jogo, subir dois níveis
+                    homePath = '../../home/home.html';
+                } else {
+                    // Estamos em uma página de primeiro nível
+                    homePath = '../home/home.html';
+                }
+                
+                window.location.href = homePath;
+            });
+        }
+    });
+
+    // =========================================
+
+// Usando history.back() se quiser voltar à página anterior
+document.addEventListener('DOMContentLoaded', function() {
+    const voltarBtn = document.getElementById('solveBtn');
+    
+    if (voltarBtn) {
+        voltarBtn.addEventListener('click', function() {
+            // Voltar à página anterior no histórico
+            window.history.back();
+        });
+    }
+});
+
 // Initialize game when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     const game = new SpaceInvadersGame();
@@ -2006,43 +2043,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
-    // Button back
-    document.addEventListener('DOMContentLoaded', function() {
-        const voltarBtn = document.getElementById('solveBtn');
-        
-        if (voltarBtn) {
-            voltarBtn.addEventListener('click', function() {
-                // Detectar se estamos em um subdiretório de jogos
-                const currentPath = window.location.pathname;
-                let homePath;
-                
-                if (currentPath.includes('/jogos/')) {
-                    // Estamos em um jogo, subir dois níveis
-                    homePath = '../../home/home.html';
-                } else {
-                    // Estamos em uma página de primeiro nível
-                    homePath = '../home/home.html';
-                }
-                
-                window.location.href = homePath;
-            });
-        }
-    });
-
-    // =========================================
-
-    // Usando history.back() se quiser voltar à página anterior
-    document.addEventListener('DOMContentLoaded', function() {
-        const voltarBtn = document.getElementById('solveBtn');
-        
-        if (voltarBtn) {
-            voltarBtn.addEventListener('click', function() {
-                // Voltar à página anterior no histórico
-                window.history.back();
-            });
-        }
-    });
     
     // Add enhanced sound system with Web Audio API
     class EnhancedAudioSystem {
